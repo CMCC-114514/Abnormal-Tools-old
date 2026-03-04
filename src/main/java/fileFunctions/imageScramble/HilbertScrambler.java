@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IEADScrambler {
+public class HilbertScrambler {
 
     /* ==========================
        Hilbert (Gilbert 2D)
@@ -98,7 +98,7 @@ public class IEADScrambler {
        加密
        ========================== */
 
-    public static BufferedImage encrypt(BufferedImage img) {
+    public static BufferedImage scramble(BufferedImage img) {
         int w = img.getWidth();
         int h = img.getHeight();
         int N = w * h;
@@ -128,7 +128,7 @@ public class IEADScrambler {
        解密
        ========================== */
 
-    public static BufferedImage decrypt(BufferedImage img) {
+    public static BufferedImage descramble(BufferedImage img) {
         int w = img.getWidth();
         int h = img.getHeight();
         int N = w * h;

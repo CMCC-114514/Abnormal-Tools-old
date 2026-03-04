@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Abnormal-Tools.iml" filepath="$PROJECT_DIR$/Abnormal-Tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kk3twt.abnormal.tools.Abnormal-Tools.main.iml" filepath="$PROJECT_DIR$/.idea/modules/kk3twt.abnormal.tools.Abnormal-Tools.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kk3twt.abnormal.tools.Abnormal-Tools.test.iml" filepath="$PROJECT_DIR$/.idea/modules/kk3twt.abnormal.tools.Abnormal-Tools.test.iml" />
     </modules>
   </component>
 </project>

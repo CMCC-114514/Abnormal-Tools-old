@@ -89,9 +89,16 @@ public class Initializer extends JDialog {
                     // 解压成功，写入初始化标记文件，并删除依赖包
                     Path initFile = AppPath.resourcePath("isInitialized");
                     Files.write(initFile, "1".getBytes(), StandardOpenOption.CREATE_NEW);
-                    libZip.toFile().delete();
+
+                    if (!libZip.toFile().delete()) {
+                        JOptionPane.showMessageDialog(null,
+                                "删除依赖包失败，请尝试手动删除",
+                                "错误",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
 
                     JOptionPane.showMessageDialog(null, "初始化完成，请重新启动程序");
+
                     System.exit(0);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(Initializer.this,
