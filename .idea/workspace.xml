@@ -9,7 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7157c458-9316-40d9-89dc-5f8aa60a7c60" name="更改" comment="Add annotations">
+    <list default="true" id="7157c458-9316-40d9-89dc-5f8aa60a7c60" name="更改" comment="update: v1.6.2">
+      <change afterPath="$PROJECT_DIR$/.idea/modules/kk3twt.abnormal.tools.Abnormal-Tools.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/fileFunctions/formatConversion/VideoConverter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/fileFunctions/formatConversion/formatConversionGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/fileHashes/fileHashes.bin" afterDir="false" />
@@ -17,20 +20,20 @@
       <change beforePath="$PROJECT_DIR$/.gradle/8.14/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/kk3twt.abnormal.tools.Abnormal-Tools.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MainGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MainGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/audioConversion/AudioConversionGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fileFunctions/audioConversion/AudioConversionGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/audioConversion/Converter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/audioConversion/AudioConversionGUI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/audioConversion/AudioConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fileFunctions/formatConversion/AudioConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/fileDownloader/FileDownloaderGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fileFunctions/fileDownloader/FileDownloaderGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/imageScramble/ScrambleProgress.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/imageScramble/ScramblerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fileFunctions/imageScramble/ScramblerGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/imgConversion/Converter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/imgConversion/ImageFormatConverter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/imgConversion/ImageFormatConverterGUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/musicUnlocker/MusicUnlockerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fileFunctions/musicUnlocker/MusicUnlockerGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/imageScramble/VideoScrambler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fileFunctions/imageScramble/VideoScrambler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/imgConversion/ImageConversionGUI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fileFunctions/imgConversion/ImageConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fileFunctions/formatConversion/ImageConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Downloader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Downloader.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,9 +48,6 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
         <task path="$PROJECT_DIR$">
           <activation />
         </task>
@@ -143,6 +143,9 @@
     "Gradle.Abnormal-Tools [:utils.fileDownloader.Download.main()].executor": "Run",
     "Gradle.Abnormal-Tools-main [:Main.main()].executor": "Run",
     "Gradle.Abnormal-Tools-main [:MainGUI.main()].executor": "Run",
+    "Gradle.Abnormal-Tools-main [:fileFunctions.fileDownloader.FileDownloaderGUI.main()].executor": "Run",
+    "Gradle.Abnormal-Tools-main [:fileFunctions.formatConversion.AudioConversionGUI.main()].executor": "Run",
+    "Gradle.Abnormal-Tools-main [:fileFunctions.formatConversion.formatConversionGUI.main()].executor": "Run",
     "Gradle.Abnormal-Tools-main [:fileFunctions.imageScramble.ScramblerGUI.main()].executor": "Run",
     "Gradle.SourceCode [:MainGUI.main()].executor": "Run",
     "Gradle.SourceCode [:fileFunctions.imageScramble.ScramblerGUI.main()].executor": "Run",
@@ -170,6 +173,7 @@
     "Gradle.source_code [:utils.AppPath.main()].executor": "Run",
     "Gradle.source_code [:utils.Initializer.main()].executor": "Run",
     "Gradle.下载源代码.executor": "Run",
+    "Gradle.构建 Abnormal-Tools-main.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
@@ -185,7 +189,8 @@
     "settings.editor.selected.configurable": "preferences.lookFeel",
     "应用程序.MainGUI.executor": "Run",
     "应用程序.Mp3BpmAnalyzer.executor": "Run",
-    "应用程序.ScramblerGUI.executor": "Run"
+    "应用程序.ScramblerGUI.executor": "Run",
+    "应用程序.test.executor": "Run"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -202,13 +207,6 @@
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="" />
     </key>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-30f59d01ecdd-cffe25b9f5b3-intellij.indexing.shared.core-IU-253.28294.334" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
@@ -312,6 +310,7 @@
     <MESSAGE value="update: release v1.6.0" />
     <MESSAGE value="update: release v1.6.1" />
     <MESSAGE value="Add annotations" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add annotations" />
+    <MESSAGE value="update: v1.6.2" />
+    <option name="LAST_COMMIT_MESSAGE" value="update: v1.6.2" />
   </component>
 </project>

@@ -11,9 +11,8 @@ import calculators.bmi.BmiGUI;
 import calculators.houseLoan.HouseLoanGUI;
 
 // 文件功能
-import fileFunctions.audioConversion.AudioConversionGUI;
 import fileFunctions.imageScramble.ScramblerGUI;
-import fileFunctions.imgConversion.ImageConversionGUI;
+import fileFunctions.formatConversion.formatConversionGUI;
 import fileFunctions.musicUnlocker.MusicUnlockerGUI;
 import fileFunctions.fileDownloader.FileDownloaderGUI;
 
@@ -153,36 +152,31 @@ public class MainGUI extends JFrame{
         fileFunctionPanel.setBorder(new TitledBorder("文件功能"));
 
         JButton musicUnlock = new JButton("音乐解锁");
-        JButton imgConversion = new JButton("图片格式转换");
-        JButton audioConversion = new JButton("音频格式转换");
+        JButton formatConversion = new JButton("音视频格式转换");
         JButton fileDownload = new JButton("文件下载器");
         JButton imageScramble = new JButton("图片与视频混淆");
 
         // 设置按钮字体
         musicUnlock.setFont(font);
-        imgConversion.setFont(font);
-        audioConversion.setFont(font);
+        formatConversion.setFont(font);
         fileDownload.setFont(font);
         imageScramble.setFont(font);
 
         // 设置按钮大小
         musicUnlock.setPreferredSize(BUTTON_SIZE);
-        imgConversion.setPreferredSize(BUTTON_SIZE);
-        audioConversion.setPreferredSize(BUTTON_SIZE);
+        formatConversion.setPreferredSize(BUTTON_SIZE);
         fileDownload.setPreferredSize(BUTTON_SIZE);
-        imgConversion.setPreferredSize(BUTTON_SIZE);
+        formatConversion.setPreferredSize(BUTTON_SIZE);
 
         // 按钮监听
         musicUnlock.addActionListener(e -> MusicUnlockerGUI.main(args));
-        imgConversion.addActionListener(e -> ImageConversionGUI.main(args));
-        audioConversion.addActionListener(e -> AudioConversionGUI.main(args));
+        formatConversion.addActionListener(e -> formatConversionGUI.main(args));
         fileDownload.addActionListener(e -> FileDownloaderGUI.main(args));
         imageScramble.addActionListener(e -> ScramblerGUI.main(args));
 
         // 添加按钮
         fileFunctionPanel.add(musicUnlock);
-        fileFunctionPanel.add(imgConversion);
-        fileFunctionPanel.add(audioConversion);
+        fileFunctionPanel.add(formatConversion);
         fileFunctionPanel.add(fileDownload);
         fileFunctionPanel.add(imageScramble);
 

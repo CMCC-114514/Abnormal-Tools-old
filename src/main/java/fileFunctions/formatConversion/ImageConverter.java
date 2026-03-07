@@ -1,6 +1,8 @@
-package fileFunctions.imgConversion;
+package fileFunctions.formatConversion;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -52,13 +54,23 @@ public class ImageConverter {
         }
     }
 
-    public static String getSupportedFormat() {
-        StringBuilder info = new StringBuilder();
-        for (String format : IMAGE_FORMATS) {
-            info.append("  *").append(".").append(format);
+    public static void chooseInputFile(JTextField inputField, JTextField outputField) {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        for (String format : ImageConverter.IMAGE_FORMATS) {
+            chooser.addChoosableFileFilter(
+                    new FileNameExtensionFilter(format + " 文件（*."  + format.toLowerCase() + "）", format.toLowerCase()));
         }
 
-        return info.toString();
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            inputField.setText(chooser.getSelectedFile().getAbsolutePath());
+
+            String inputPath = inputField.getText();
+            int dot = inputPath.lastIndexOf('.');
+            String base = (dot > 0) ? inputPath.substring(0, dot + 1) : inputPath + ".";
+            outputField.setText(base);
+        }
     }
 }
 

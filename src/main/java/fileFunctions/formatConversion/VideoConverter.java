@@ -1,20 +1,22 @@
-package fileFunctions.audioConversion;
+package fileFunctions.formatConversion;
 
 import utils.AppPath;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class AudioConverter {
+public class VideoConverter {
+    private VideoConverter(){}
 
     private static final String FFMPEG_PATH_SYSTEM = System.getenv("ffmpeg");
     private static final String FFMPEG_PATH = AppPath.resourcePath("ffmpeg\\ffmpeg.exe").toString();
 
-    // 假设已经设置了系统变量PATH
-    public static final String[] AUDIO_FORMATS = {
-            "MP3", "WAV", "FLAC", "OGG", "AAC", "M4A", "AMR", "OPUS", "WMA"
+    public static final String[] VIDEO_FORMATS = {
+            "MP4", "MKV", "WEBM", "MOV", "AVI", "FLV", "TS"
     };
 
     public static void convert(String input, String output) throws Exception {
@@ -28,7 +30,7 @@ public class AudioConverter {
                 path,
                 "-y",                 // 覆盖输出
                 "-i", input,          // 输入文件
-                "-vn",                // 不处理视频
+                "-qscale 0",          // 维持原视频文件质量
                 output
         );
 
@@ -46,8 +48,26 @@ public class AudioConverter {
 
         int exitCode = process.waitFor();
         if (exitCode != 0) {
-            throw new RuntimeException("FFmpeg failed with code " + exitCode);
+            throw new RuntimeException("FFmpeg出现问题，错误码：" + exitCode);
+        }
+    }
+
+    public static void chooseInputFile(JTextField inputField, JTextField outputField) {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+        for (String format : VIDEO_FORMATS) {
+            chooser.addChoosableFileFilter(
+                    new FileNameExtensionFilter(format + " 文件（*."  + format.toLowerCase() + "）", format.toLowerCase()));
+        }
+
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            inputField.setText(chooser.getSelectedFile().getAbsolutePath());
+
+            String inputPath = inputField.getText();
+            int dot = inputPath.lastIndexOf('.');
+            String base = (dot > 0) ? inputPath.substring(0, dot + 1) : inputPath + ".";
+            outputField.setText(base);
         }
     }
 }
-

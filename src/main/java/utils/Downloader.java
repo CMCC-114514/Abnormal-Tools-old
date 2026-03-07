@@ -94,27 +94,4 @@ public class Downloader extends SwingWorker<Void, Integer> {
 
         return null;
     }
-
-    @Override
-    protected void done() {
-
-        try {
-            get(); // 完成 or 异常 or 取消
-
-            JOptionPane.showMessageDialog(null, "下载完成！");
-
-        } catch (java.util.concurrent.CancellationException e) {
-            // 用户暂停
-            JOptionPane.showMessageDialog(null, "下载已暂停");
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "下载失败：" + e.getMessage(),
-                    "错误",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
-    }
-
 }

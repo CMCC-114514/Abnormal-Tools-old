@@ -24,8 +24,8 @@ public class VideoScrambler {
     public BufferedImage scrambleFrame(BufferedImage src, int choose) {
         BufferedImage result = null;
         switch (choose) {
-            case 1 -> result = PasswordScrambler.scramble(src, seed);
-            case 2 -> result = HilbertScrambler.scramble(src);
+            case 0 -> result = PasswordScrambler.scramble(src, seed);
+            case 1 -> result = HilbertScrambler.scramble(src);
         }
         return result;
     }
@@ -36,8 +36,8 @@ public class VideoScrambler {
     public BufferedImage descrambleFrame(BufferedImage src, int choose) {
         BufferedImage result = null;
         switch (choose) {
-            case 1 -> result = PasswordScrambler.descramble(src, seed);
-            case 2 -> result = HilbertScrambler.descramble(src);
+            case 0 -> result = PasswordScrambler.descramble(src, seed);
+            case 1 -> result = HilbertScrambler.descramble(src);
         }
         return result;
     }

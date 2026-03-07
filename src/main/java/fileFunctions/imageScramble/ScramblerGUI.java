@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class ScramblerGUI extends JFrame {
-    private JTextField inputField;
     private String outputPath;
 
     private JPanel mainPanel;
@@ -41,7 +40,7 @@ public class ScramblerGUI extends JFrame {
 
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
 
-        JLabel footerLabel = new JLabel("目前仅支持png格式，解混淆后的图片质量取决于原图质量", SwingUtilities.CENTER);
+        JLabel footerLabel = new JLabel("图片混淆仅支持PNG格式，视频混淆需要时间，请耐心等待", SwingUtilities.CENTER);
         footerLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         mainPanel.add(footerLabel, BorderLayout.SOUTH);
     }
@@ -52,15 +51,15 @@ public class ScramblerGUI extends JFrame {
 
         // 选择文件面板
         JPanel inputPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-        inputField = new JTextField(30);
+        JTextField inputField = new JTextField(30);
         JButton inputBtn = new JButton("选择图片文件");
-        inputBtn.addActionListener(e -> chooseImgFile());
+        inputBtn.addActionListener(e -> chooseImgFile(inputField));
         inputPanel.add(inputField);
         inputPanel.add(inputBtn);
 
         // 选择混淆类型
         JPanel typePanel = new JPanel(new GridLayout(2, 2, 10, 10));
-        String[] type = {"密码混淆", "小番茄算法混淆"};
+        String[] type = {"密码混淆", "希尔伯特曲线混淆"};
         JComboBox<String> typeBox = new JComboBox<>(type);
         JTextField passwordField = new JTextField(30);
         typePanel.add(new JLabel("选择混淆类型："));
@@ -89,7 +88,7 @@ public class ScramblerGUI extends JFrame {
 
         scrambleButton.addActionListener(e -> {
             try {
-                imgScramble(typeBox.getSelectedIndex(), passwordField.getText().trim());
+                imgScramble(typeBox.getSelectedIndex(), inputField.getText().trim(), passwordField.getText().trim());
                 JOptionPane.showMessageDialog(this, "完成");
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "错误：" + ex.getMessage());
@@ -98,7 +97,7 @@ public class ScramblerGUI extends JFrame {
 
         descrambleButton.addActionListener(e -> {
             try {
-                imgDescramble(typeBox.getSelectedIndex(), passwordField.getText().trim());
+                imgDescramble(typeBox.getSelectedIndex(), inputField.getText().trim(), passwordField.getText().trim());
                 JOptionPane.showMessageDialog(this, "完成");
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "错误：" + ex.getMessage());
@@ -116,15 +115,15 @@ public class ScramblerGUI extends JFrame {
 
         // 选择文件面板
         JPanel inputPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-        inputField = new JTextField(30);
+        JTextField inputField = new JTextField(30);
         JButton inputBtn = new JButton("选择视频文件");
-        inputBtn.addActionListener(e -> chooseVideoFile());
+        inputBtn.addActionListener(e -> chooseVideoFile(inputField));
         inputPanel.add(inputField);
         inputPanel.add(inputBtn);
 
         // 选择混淆类型
         JPanel typePanel = new JPanel(new GridLayout(2, 2, 10, 10));
-        String[] type = {"密码混淆", "小番茄算法混淆"};
+        String[] type = {"密码混淆", "希尔伯特曲线混淆"};
         JComboBox<String> typeBox = new JComboBox<>(type);
         JTextField passwordField = new JTextField(30);
         typePanel.add(new JLabel("选择混淆类型："));
@@ -153,7 +152,7 @@ public class ScramblerGUI extends JFrame {
 
         scrambleButton.addActionListener(e -> {
             try {
-                videoScramble(typeBox.getSelectedIndex(), passwordField.getText().trim());
+                videoScramble(typeBox.getSelectedIndex(), inputField.getText().trim(), passwordField.getText().trim());
                 JOptionPane.showMessageDialog(this, "完成");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "错误：" + ex.getMessage());
@@ -162,7 +161,7 @@ public class ScramblerGUI extends JFrame {
 
         descrambleButton.addActionListener(e -> {
             try {
-                videoDescramble(typeBox.getSelectedIndex(), passwordField.getText().trim());
+                videoDescramble(typeBox.getSelectedIndex(), inputField.getText().trim(), passwordField.getText().trim());
                 JOptionPane.showMessageDialog(this, "完成");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "错误：" + ex.getMessage());
@@ -174,7 +173,7 @@ public class ScramblerGUI extends JFrame {
         videoScramblePanel.add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    private void chooseImgFile() {
+    private void chooseImgFile(JTextField inputField) {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.addChoosableFileFilter(
@@ -191,7 +190,7 @@ public class ScramblerGUI extends JFrame {
         }
     }
 
-    private void chooseVideoFile() {
+    private void chooseVideoFile(JTextField inputField) {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         chooser.addChoosableFileFilter(
@@ -208,8 +207,7 @@ public class ScramblerGUI extends JFrame {
         }
     }
 
-    private void imgScramble(int type, String password) throws IOException {
-        String imgPath = inputField.getText();
+    private void imgScramble(int type, String imgPath, String password) throws IOException {
         BufferedImage src = ImageIO.read(new File(imgPath));
 
         BufferedImage out;
@@ -223,8 +221,7 @@ public class ScramblerGUI extends JFrame {
         ImageIO.write(out, "PNG", new File(outputPath));
     }
 
-    private void imgDescramble(int type, String password) throws IOException {
-        String imgPath = inputField.getText();
+    private void imgDescramble(int type, String imgPath, String password) throws IOException {
         BufferedImage src = ImageIO.read(new File(imgPath));
 
         BufferedImage out;
@@ -238,8 +235,7 @@ public class ScramblerGUI extends JFrame {
         ImageIO.write(out, "PNG", new File(outputPath));
     }
 
-    private void videoScramble(int type, String password) throws Exception {
-        String videoPath = inputField.getText().trim();
+    private void videoScramble(int type, String videoPath, String password) throws Exception {
         int[] videoInfo = VideoScrambler.probeResolution(videoPath);
         long seed = 0;
 
@@ -256,8 +252,7 @@ public class ScramblerGUI extends JFrame {
                 type);
     }
 
-    private void videoDescramble(int type, String password) throws Exception {
-        String videoPath = inputField.getText().trim();
+    private void videoDescramble(int type, String videoPath, String password) throws Exception {
         int[] videoInfo = VideoScrambler.probeResolution(videoPath);
         long seed = 0;
 
