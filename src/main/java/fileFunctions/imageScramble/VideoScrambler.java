@@ -155,9 +155,8 @@ public class VideoScrambler {
     public static void scramble(String input, String output,
                                 int w, int h, int fps,
                                 long seed,
-                                int choose) throws Exception {
-
-        long totalFrames = probeFrameCount(input);
+                                int choose,
+                                ProgressCallback callback) throws Exception {
 
         Process ffmpegDecode = new ProcessBuilder(
                 "ffmpeg",
@@ -194,12 +193,20 @@ public class VideoScrambler {
         InputStream in = ffmpegDecode.getInputStream();
         OutputStream out = ffmpegEncode.getOutputStream();
 
+        long processed = 0;
+
         while (true) {
             var frame = scrambler.readFrame(in);
             if (frame == null) break;
 
             var scrambled = scrambler.scrambleFrame(frame, choose);
             scrambler.writeFrame(out, scrambled);
+
+            processed++;
+
+            if(callback != null){
+                callback.onProgress(processed);
+            }
         }
 
         out.flush();
@@ -215,7 +222,8 @@ public class VideoScrambler {
     public static void descramble(String input, String output,
                                   int w, int h, int fps,
                                   long seed,
-                                  int choose) throws Exception {
+                                  int choose,
+                                  ProgressCallback callback) throws Exception {
 
         Process ffmpegDecode = new ProcessBuilder(
                 "ffmpeg",
@@ -252,12 +260,20 @@ public class VideoScrambler {
         InputStream in = ffmpegDecode.getInputStream();
         OutputStream out = ffmpegEncode.getOutputStream();
 
+        long processed = 0;
+
         while (true) {
             var frame = scrambler.readFrame(in);
             if (frame == null) break;
 
             var descrambled = scrambler.descrambleFrame(frame, choose);
             scrambler.writeFrame(out, descrambled);
+
+            processed++;
+
+            if (callback != null) {
+                callback.onProgress(processed);
+            }
         }
 
         out.flush();
@@ -267,5 +283,9 @@ public class VideoScrambler {
 
         ffmpegDecode.waitFor();
         ffmpegEncode.waitFor();
+    }
+
+    public interface ProgressCallback {
+        void onProgress(long processedFrames);
     }
 }

@@ -243,13 +243,16 @@ public class ScramblerGUI extends JFrame {
             seed = PasswordScrambler.passwordToSeed(password);
         }
 
-        VideoScrambler.scramble(videoPath,
+        ScrambleProgress progress = new ScrambleProgress();
+
+        progress.start(videoPath,
                 outputPath,
                 videoInfo[0],
                 videoInfo[1],
                 videoInfo[2],
                 seed,
-                type);
+                type,
+                true);
     }
 
     private void videoDescramble(int type, String videoPath, String password) throws Exception {
@@ -260,13 +263,16 @@ public class ScramblerGUI extends JFrame {
             seed = PasswordScrambler.passwordToSeed(password);
         }
 
-        VideoScrambler.descramble(videoPath,
+        ScrambleProgress progress = new ScrambleProgress();
+
+        progress.start(videoPath,
                 outputPath,
                 videoInfo[0],
                 videoInfo[1],
                 videoInfo[2],
                 seed,
-                type);
+                type,
+                false);
     }
 
     public static void main(String[] args) {
