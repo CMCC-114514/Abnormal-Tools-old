@@ -19,12 +19,17 @@ public class ZipExtractor extends SwingWorker<Void, Integer> {
     private JProgressBar progressBar;
     private JLabel progressLabel;
 
+    private final java.nio.charset.Charset zipCharset;
+
     private long totalBytes = 0;
     private long extractedBytes = 0;
 
     public ZipExtractor(Path filePath, Path target) {
         this.filePath = filePath;
         this.target = target;
+
+        this.zipCharset = detectCharset(filePath);
+
         initProgressUI();
     }
 
@@ -63,7 +68,7 @@ public class ZipExtractor extends SwingWorker<Void, Integer> {
 
     /** 预扫描 ZIP 获取总字节数 */
     private void calculateTotalBytes() throws IOException {
-        try (ZipFile zipFile = new ZipFile(filePath.toFile())) {
+        try (ZipFile zipFile = new ZipFile(filePath.toFile(), zipCharset)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry e = entries.nextElement();
@@ -84,7 +89,10 @@ public class ZipExtractor extends SwingWorker<Void, Integer> {
             Files.createDirectories(target);
         }
 
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(filePath.toFile()))) {
+        try (ZipInputStream zis = new ZipInputStream(
+                new FileInputStream(filePath.toFile()),
+                zipCharset)) {
+
             ZipEntry entry;
 
             while ((entry = zis.getNextEntry()) != null) {
@@ -123,6 +131,15 @@ public class ZipExtractor extends SwingWorker<Void, Integer> {
         int percent = (int) ((extractedBytes * 100) / totalBytes);
         setProgress(percent);
         publish(percent);
+    }
+
+    // 获取文件编码类型
+    private static java.nio.charset.Charset detectCharset(Path zipPath) {
+        try (ZipFile zip = new ZipFile(zipPath.toFile(), java.nio.charset.StandardCharsets.UTF_8)) {
+            return java.nio.charset.StandardCharsets.UTF_8;
+        } catch (Exception e) {
+            return java.nio.charset.Charset.forName("GBK");
+        }
     }
 
     @Override
