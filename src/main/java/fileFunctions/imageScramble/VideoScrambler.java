@@ -2,6 +2,8 @@ package fileFunctions.imageScramble;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class VideoScrambler {
 
@@ -151,12 +153,60 @@ public class VideoScrambler {
         }
     }
 
+    // 从视频中提取音频
+    public static File extractAudio(String videoPath) throws Exception {
+        // 创建临时文件
+        File audio = File.createTempFile("audio_", ".aac");
+
+        // 以aac格式保存提取的音频
+        Process extract = new ProcessBuilder(
+                "ffmpeg",
+                "-i", videoPath,
+                "-vn",
+                "-c:a", "aac",
+                "-b:a", "128k",
+                "-y",
+                audio.getAbsolutePath()
+        )
+                .redirectError(ProcessBuilder.Redirect.INHERIT)
+                .start();
+
+        int exitCode = extract.waitFor();
+        if (exitCode != 0) {
+            throw new IOException("音频提取失败：error = " + exitCode);
+        }
+        return audio;
+    }
+
+    // 音频合并
+    public static void mergeAudio(String processedVideo, File audio, String output) throws Exception {
+        Process merge = new ProcessBuilder(
+                "ffmpeg",
+                "-i", processedVideo,
+                "-i", audio.getAbsolutePath(),
+                "-c", "copy",
+                "-map", "0:v:0",
+                "-map", "1:a:0",
+                "-y",
+                output
+        )
+                .redirectError(ProcessBuilder.Redirect.INHERIT)
+                .start();
+
+        int exitCode = merge.waitFor();
+        if (exitCode != 0) {
+            throw new IOException("音频合并失败：error = " + exitCode);
+        }
+    }
+
     // 视频混淆
     public static void scramble(String input, String output,
                                 int w, int h, int fps,
                                 long seed,
                                 int choose,
                                 ProgressCallback callback) throws Exception {
+
+        File audio = extractAudio(input);
 
         Process ffmpegDecode = new ProcessBuilder(
                 "ffmpeg",
@@ -216,6 +266,8 @@ public class VideoScrambler {
 
         ffmpegDecode.waitFor();
         ffmpegEncode.waitFor();
+
+        mergeAudio(output, audio, output);
     }
 
     // 视频解混淆
