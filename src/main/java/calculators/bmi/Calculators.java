@@ -5,7 +5,7 @@ package calculators.bmi;
  *
  * @author CMCC-114514
  */
-public class BMI {
+public class Calculators {
 
     /**
      * 计算身体质量指数（BMI）。

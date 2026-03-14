@@ -1,4 +1,4 @@
-package calculators.geometricCalculation;
+package calculators.geometry;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -108,8 +108,15 @@ public class GeometricCalculatorGUI extends JFrame {
                 double[] results = Calculators.rectangle(length, width);
 
                 resultArea.setText(String.format(
-                        "矩形参数:\n长度 = %.2f\n宽度 = %.2f\n\n计算结果:\n" +
-                                "面积 = %.4f\n周长 = %.4f\n对角线长度 = %.4f",
+                        """
+                                矩形参数:
+                                长度 = %.2f
+                                宽度 = %.2f
+                                
+                                计算结果:
+                                面积 = %.4f
+                                周长 = %.4f
+                                对角线长度 = %.4f""",
                         length, width, results[0], results[1], results[2]
                 ));
             } catch (NumberFormatException ex) {
@@ -166,8 +173,14 @@ public class GeometricCalculatorGUI extends JFrame {
                 }
 
                 resultArea.setText(String.format(
-                        "已知条件:\n%s\n\n计算结果:\n" +
-                                "半径 = %.4f\n周长 = %.4f\n面积 = %.4f",
+                        """
+                                已知条件:
+                                %s
+                                
+                                计算结果:
+                                半径 = %.4f
+                                周长 = %.4f
+                                面积 = %.4f""",
                         knownWhat, results[0], results[1], results[2]
                 ));
             } catch (NumberFormatException ex) {
@@ -371,8 +384,14 @@ public class GeometricCalculatorGUI extends JFrame {
                 double[] results = Calculators.cone(radius, height);
 
                 resultArea.setText(String.format(
-                        "圆锥体参数:\n底面半径 = %.2f\n高 = %.2f\n\n计算结果:\n" +
-                                "表面积 = %.4f\n体积 = %.4f",
+                        """
+                                圆锥体参数:
+                                底面半径 = %.2f
+                                高 = %.2f
+                                
+                                计算结果:
+                                表面积 = %.4f
+                                体积 = %.4f""",
                         radius, height, results[0], results[1]
                 ));
             } catch (NumberFormatException ex) {
@@ -429,8 +448,14 @@ public class GeometricCalculatorGUI extends JFrame {
                 }
 
                 resultArea.setText(String.format(
-                        "已知条件:\n%s\n\n计算结果:\n" +
-                                "半径 = %.4f\n表面积 = %.4f\n体积 = %.4f",
+                        """
+                                已知条件:
+                                %s
+                                
+                                计算结果:
+                                半径 = %.4f
+                                表面积 = %.4f
+                                体积 = %.4f""",
                         knownWhat, results[0], results[1], results[2]
                 ));
             } catch (NumberFormatException ex) {
@@ -484,8 +509,16 @@ public class GeometricCalculatorGUI extends JFrame {
                 double[] results = Calculators.cuboid(length, width, height);
 
                 resultArea.setText(String.format(
-                        "长方体参数:\n长 = %.2f\n宽 = %.2f\n高 = %.2f\n\n计算结果:\n" +
-                                "对角线长度 = %.4f\n表面积 = %.4f\n体积 = %.4f",
+                        """
+                                长方体参数:
+                                长 = %.2f
+                                宽 = %.2f
+                                高 = %.2f
+                                
+                                计算结果:
+                                对角线长度 = %.4f
+                                表面积 = %.4f
+                                体积 = %.4f""",
                         length, width, height, results[0], results[1], results[2]
                 ));
             } catch (NumberFormatException ex) {
@@ -535,8 +568,14 @@ public class GeometricCalculatorGUI extends JFrame {
                 double[] results = Calculators.cylinder(radius, height);
 
                 resultArea.setText(String.format(
-                        "圆柱体参数:\n底面半径 = %.2f\n高 = %.2f\n\n计算结果:\n" +
-                                "表面积 = %.4f\n体积 = %.4f",
+                        """
+                                圆柱体参数:
+                                底面半径 = %.2f
+                                高 = %.2f
+                                
+                                计算结果:
+                                表面积 = %.4f
+                                体积 = %.4f""",
                         radius, height, results[0], results[1]
                 ));
             } catch (NumberFormatException ex) {
@@ -549,7 +588,7 @@ public class GeometricCalculatorGUI extends JFrame {
 
     private void setupLayout() {
         // 设置统一的字体
-        Font titleFont = new Font("微软雅黑", Font.BOLD, 16);
+        // Font titleFont = new Font("微软雅黑", Font.BOLD, 16);
         Font labelFont = new Font("宋体", Font.PLAIN, 14);
         Font buttonFont = new Font("微软雅黑", Font.PLAIN, 14);
 

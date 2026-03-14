@@ -2,9 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 
 // 计算功能
-import calculators.dateCalculation.DateCalculatorGUI;
+import calculators.date.DateCalculatorGUI;
 import calculators.factorial.FactorialGUI;
-import calculators.geometricCalculation.GeometricCalculatorGUI;
+import calculators.geometry.GeometricCalculatorGUI;
 import calculators.unitsConversion.UnitConverterGUI;
 import calculators.bmi.BmiGUI;
 import calculators.houseLoan.HouseLoanGUI;

@@ -1,7 +1,7 @@
 package calculators.unitsConversion;
 
-public class Converts {
-    private Converts(){}
+public class Convertors {
+    private Convertors(){}
 
     // 长度单位名称数组
     public static final String[] LENGTH_UNITS = {

@@ -61,8 +61,8 @@ public class BmiGUI extends JFrame {
                 double weight = Double.parseDouble(weightField.getText().trim());
 
                 // 调用 BMI 类的方法进行计算和分类
-                double result = BMI.calculate(weight, height);
-                String type = BMI.returnType(result);
+                double result = Calculators.calculate(weight, height);
+                String type = Calculators.returnType(result);
 
                 // 格式化输出结果，包含原始身高（厘米）、身高（米）、体重、BMI 值和体重分类
                 String outText = String.format(

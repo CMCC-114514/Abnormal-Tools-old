@@ -1,4 +1,4 @@
-package calculators.dateCalculation;
+package calculators.date;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

@@ -19,7 +19,7 @@ public class HouseLoanGUI extends JFrame {
         JPanel inputPanel = new JPanel(new GridLayout(5, 2, 5, 5));
         inputPanel.setBorder(new TitledBorder("输入信息"));
 
-        JComboBox<String> patternCombo = new JComboBox<>(HouseLoan.PATTERNS);
+        JComboBox<String> patternCombo = new JComboBox<>(Calculators.PATTERNS);
         JTextField limitField = new JTextField();
         JTextField loanAmountField = new JTextField();
         JTextField rateField = new JTextField();
@@ -56,7 +56,7 @@ public class HouseLoanGUI extends JFrame {
                 double rate = Double.parseDouble(rateField.getText().trim()) / 1200;
 
                 if (selectedIndex == 0) {
-                    double result = HouseLoan.interest(principal, rate, totalMonth);
+                    double result = Calculators.interest(principal, rate, totalMonth);
                     String outText = getString(result, totalMonth, principal);
 
                     resultArea.setText(outText);
@@ -78,7 +78,7 @@ public class HouseLoanGUI extends JFrame {
 
     // 等额本金输出结果
     private static String getString(double principal, double rate, int totalMonth) {
-        double[] result = HouseLoan.capital(principal, rate, totalMonth);
+        double[] result = Calculators.capital(principal, rate, totalMonth);
         double totalAmount = (result[0] + result[result.length - 1]) * result.length / 2;
         double firstMonth = result[0];
         double degressive = result[0] - result[1];

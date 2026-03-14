@@ -28,13 +28,13 @@ public class UnitConverterGUI extends JFrame {
         tabbedPane = new JTabbedPane();
 
         // 添加标签页
-        tabbedPane.addTab("长度换算", createPanels(Converts.LENGTH_UNITS));
-        tabbedPane.addTab("面积换算", createPanels(Converts.AREA_UNITS));
-        tabbedPane.addTab("体积换算", createPanels(Converts.VOLUME_UNITS));
-        tabbedPane.addTab("质量换算", createPanels(Converts.MASS_UNITS));
-        tabbedPane.addTab("速度换算", createPanels(Converts.SPEED_UNITS));
-        tabbedPane.addTab("温度换算", createPanels(Converts.TEMPERATURE_UNITS));
-        tabbedPane.addTab("存储单位换算", createPanels(Converts.STORAGE_UNITS));
+        tabbedPane.addTab("长度换算", createPanels(Convertors.LENGTH_UNITS));
+        tabbedPane.addTab("面积换算", createPanels(Convertors.AREA_UNITS));
+        tabbedPane.addTab("体积换算", createPanels(Convertors.VOLUME_UNITS));
+        tabbedPane.addTab("质量换算", createPanels(Convertors.MASS_UNITS));
+        tabbedPane.addTab("速度换算", createPanels(Convertors.SPEED_UNITS));
+        tabbedPane.addTab("温度换算", createPanels(Convertors.TEMPERATURE_UNITS));
+        tabbedPane.addTab("存储单位换算", createPanels(Convertors.STORAGE_UNITS));
         tabbedPane.addTab("进制换算", createNumSystemPanel());
         tabbedPane.addTab("颜色码转换", createColorCodePanel());
 
@@ -189,7 +189,7 @@ public class UnitConverterGUI extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 1;
-        JComboBox<String> codeBox = new JComboBox<>(Converts.COLOR_CODES);
+        JComboBox<String> codeBox = new JComboBox<>(Convertors.COLOR_CODES);
         inputPanel.add(codeBox, gbc);
 
         // 分隔符
@@ -289,8 +289,8 @@ public class UnitConverterGUI extends JFrame {
                         int g = Integer.parseInt(gField.getText().trim());
                         int b = Integer.parseInt(bField.getText().trim());
                         int[] rgb = {r, g, b};
-                        String hex = Converts.RGB2HEX(rgb).toUpperCase();
-                        int[] cmyk = Converts.RGB2CMYK(rgb);
+                        String hex = Convertors.RGB2HEX(rgb).toUpperCase();
+                        int[] cmyk = Convertors.RGB2CMYK(rgb);
 
                         results = new String[]{Arrays.toString(rgb), Arrays.toString(cmyk), hex};
                         break;
@@ -302,8 +302,8 @@ public class UnitConverterGUI extends JFrame {
                         int y = Integer.parseInt(yField.getText().trim());
                         int k = Integer.parseInt(kField.getText().trim());
                         int[] cmyk = {c, m, y, k};
-                        int[] rgb = Converts.CMYK2RGB(cmyk);
-                        String hex = Converts.RGB2HEX(rgb).toUpperCase();
+                        int[] rgb = Convertors.CMYK2RGB(cmyk);
+                        String hex = Convertors.RGB2HEX(rgb).toUpperCase();
 
                         results = new String[]{Arrays.toString(rgb), Arrays.toString(cmyk), hex};
                         break;
@@ -311,8 +311,8 @@ public class UnitConverterGUI extends JFrame {
 
                     case 2 : {
                         String hex = hexField.getText().toUpperCase();
-                        int[] rgb = Converts.HEX2RGB(hex);
-                        int[] cmyk = Converts.RGB2CMYK(rgb);
+                        int[] rgb = Convertors.HEX2RGB(hex);
+                        int[] cmyk = Convertors.RGB2CMYK(rgb);
                         results = new String[]{Arrays.toString(rgb), Arrays.toString(cmyk), "#" + hex};
                     }
                 }
@@ -326,7 +326,7 @@ public class UnitConverterGUI extends JFrame {
                     //formattedResult = formattedResult.replaceAll("0*$", "").replaceAll("\\.$", "");
 
                     Object[] rowData = {
-                            Converts.COLOR_CODES[i],
+                            Convertors.COLOR_CODES[i],
                             formattedResult
                     };
                     tableModel.addRow(rowData);
@@ -387,7 +387,7 @@ public class UnitConverterGUI extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.weightx = 1;
-        JComboBox<String> unitCombo = new JComboBox<>(Converts.NUM_SYSTEM_UNITS);
+        JComboBox<String> unitCombo = new JComboBox<>(Convertors.NUM_SYSTEM_UNITS);
         inputPanel.add(unitCombo, gbc);
 
         // 分隔符
@@ -430,7 +430,7 @@ public class UnitConverterGUI extends JFrame {
                 int selectedIndex = unitCombo.getSelectedIndex();
                 byte unitChoice = (byte)(selectedIndex + 1);
 
-                String[] results = Converts.numSystem(unitChoice, value);
+                String[] results = Convertors.numSystem(unitChoice, value);
 
                 // 清空表格
                 tableModel.setRowCount(0);
@@ -440,7 +440,7 @@ public class UnitConverterGUI extends JFrame {
                     String formattedResult = String.format("%s", results[i]);
 
                     Object[] rowData = {
-                            Converts.NUM_SYSTEM_UNITS[i],
+                            Convertors.NUM_SYSTEM_UNITS[i],
                             formattedResult
                     };
                     tableModel.addRow(rowData);
@@ -472,13 +472,13 @@ public class UnitConverterGUI extends JFrame {
         int tabIndex = tabbedPane.getSelectedIndex();
 
         switch (tabIndex) {
-            case 0 -> results = Converts.length(unitChoice, value);
-            case 1 -> results = Converts.area(unitChoice, value);
-            case 2 -> results = Converts.volume(unitChoice, value);
-            case 3 -> results = Converts.mass(unitChoice, value);
-            case 4 -> results = Converts.speed(unitChoice, value);
-            case 5 -> results = Converts.temperature(unitChoice, value);
-            case 6 -> results = Converts.storage(unitChoice, value);
+            case 0 -> results = Convertors.length(unitChoice, value);
+            case 1 -> results = Convertors.area(unitChoice, value);
+            case 2 -> results = Convertors.volume(unitChoice, value);
+            case 3 -> results = Convertors.mass(unitChoice, value);
+            case 4 -> results = Convertors.speed(unitChoice, value);
+            case 5 -> results = Convertors.temperature(unitChoice, value);
+            case 6 -> results = Convertors.storage(unitChoice, value);
         }
 
         return results;

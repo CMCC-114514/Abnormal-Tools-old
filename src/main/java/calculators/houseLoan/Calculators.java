@@ -1,6 +1,6 @@
 package calculators.houseLoan;
 
-public class HouseLoan {
+public class Calculators {
     public static final String[] PATTERNS = {"等额本息", "等额本金"};
 
     // 等额本息还款:返回每个月还款额

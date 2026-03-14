@@ -1,4 +1,4 @@
-package calculators.geometricCalculation;
+package calculators.geometry;
 
 public class Calculators {
 
