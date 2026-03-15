@@ -76,6 +76,8 @@
 
 本软件使用了 um 项目的二进制程序，um 基于 MIT 许可证，其源代码可以从 [um 源代码库](https://git.um-react.app/um/cli) 获取
 
+本软件使用了 Lolicon API，该 API 的使用文档请参阅 [lolicon API文档](https://docs.api.lolicon.app/#/setu?id=%e8%af%b7%e6%b1%82)
+
 ### 鸣谢
 
 - [Img Shields](https://shields.io)
