@@ -30,7 +30,7 @@ public final class AppPath {
             }
 
             // ② 发布期：jar 在 app 目录
-            if (path.endsWith(".exe")) {
+            if (path.endsWith(".exe") || path.endsWith(".jar")) {
                 return location.getParent();
             }
 
@@ -42,7 +42,7 @@ public final class AppPath {
     }
 
     public static Path libDir() {
-        Path lib = appHome().resolve("lib");
+        Path lib = appHome().resolve("resources");
         try {
             Files.createDirectories(lib);
         } catch (Exception e) {

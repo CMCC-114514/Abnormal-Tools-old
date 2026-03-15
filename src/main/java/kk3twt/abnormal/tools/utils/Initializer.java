@@ -80,7 +80,7 @@ public class Initializer extends JDialog {
     }
 
     private void startExtract() {
-        Path libZip = AppPath.appHome().resolve("lib.zip");
+        Path libZip = AppPath.appHome().resolve("resources.zip");
         ZipExtractor extractor = new ZipExtractor(libZip, AppPath.appHome()) {
             @Override
             protected void done() {
@@ -140,9 +140,9 @@ public class Initializer extends JDialog {
     }
 
     private static void runInitialization() {
-        Path libZip = AppPath.appHome().resolve("lib.zip");
+        Path resources = AppPath.appHome().resolve("resources.zip");
         try {
-            if (!Files.exists(libZip)) {
+            if (!Files.exists(resources)) {
                 new Initializer(true).setVisible(true);
             } else {
                 new Initializer(false).setVisible(true);

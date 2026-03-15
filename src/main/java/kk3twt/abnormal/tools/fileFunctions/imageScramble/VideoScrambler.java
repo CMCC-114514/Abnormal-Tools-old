@@ -1,5 +1,7 @@
 package kk3twt.abnormal.tools.fileFunctions.imageScramble;
 
+import kk3twt.abnormal.tools.utils.AppPath;
+
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
@@ -11,13 +13,15 @@ public class VideoScrambler {
     private final int height;
     private final int frameSize;
     private final long seed;
-
+    
+    private static final String FFMPEG = Files.exists(Path.of(System.getenv("ffmpeg"))) ? "ffmpeg" : AppPath.resourcePath("ffmpeg\\ffmpeg.exe").toString();
+    private static final String FFPROBE = Files.exists(Path.of(System.getenv("ffmpeg"))) ? "ffprobe" : AppPath.resourcePath("ffmpeg\\ffprobe.exe").toString();
+    
     public VideoScrambler(int width, int height, long seed) {
         this.width = width;
         this.height = height;
         this.seed = seed;
         this.frameSize = width * height * 4; // RGBA
-        System.out.println("frameSize：" + frameSize);
     }
 
     /* =========================
@@ -103,7 +107,7 @@ public class VideoScrambler {
        ========================= */
     public static long probeFrameCount(String input) throws Exception {
         Process p = new ProcessBuilder(
-                "ffprobe",
+                FFPROBE,
                 "-v", "error",
                 "-select_streams", "v:0",
                 "-count_packets",
@@ -121,7 +125,7 @@ public class VideoScrambler {
     // 获取视频帧率和分辨率
     public static int[] probeResolution(String input) throws Exception {
         Process p = new ProcessBuilder(
-                "ffprobe",
+                FFPROBE,
                 "-v", "error",
                 "-select_streams", "v:0",
                 "-show_entries", "stream=width,height,r_frame_rate",
@@ -160,7 +164,7 @@ public class VideoScrambler {
 
         // 以aac格式保存提取的音频
         Process extract = new ProcessBuilder(
-                "ffmpeg",
+                FFMPEG,
                 "-i", videoPath,
                 "-vn",
                 "-c:a", "aac",
@@ -181,7 +185,7 @@ public class VideoScrambler {
     // 音频合并
     public static void mergeAudio(String processedVideo, File audio, String output) throws Exception {
         Process merge = new ProcessBuilder(
-                "ffmpeg",
+                FFMPEG,
                 "-i", processedVideo,
                 "-i", audio.getAbsolutePath(),
                 "-c", "copy",
@@ -210,7 +214,7 @@ public class VideoScrambler {
         File audio = extractAudio(origin);
 
         Process ffmpegDecode = new ProcessBuilder(
-                "ffmpeg",
+                FFMPEG,
                 "-i",origin,
                 "-f","rawvideo",
                 "-pix_fmt","rgba",
@@ -220,7 +224,7 @@ public class VideoScrambler {
                 .start();
 
         Process ffmpegEncode = new ProcessBuilder(
-                "ffmpeg",
+                FFMPEG,
                 "-y",
                 "-f","rawvideo",
                 "-pix_fmt","rgba",
@@ -285,7 +289,7 @@ public class VideoScrambler {
         File audio = extractAudio(origin);
 
         Process ffmpegDecode = new ProcessBuilder(
-                "ffmpeg",
+                FFMPEG,
                 "-i", origin,
                 "-f", "rawvideo",
                 "-pix_fmt", "rgba",
@@ -295,7 +299,7 @@ public class VideoScrambler {
                 .start();
 
         Process ffmpegEncode = new ProcessBuilder(
-                "ffmpeg",
+                FFMPEG,
                 "-y",
                 "-f","rawvideo",
                 "-pix_fmt","rgba",

@@ -4,16 +4,6 @@ plugins {
     application
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
-}
-
-application {
-    mainClass.set("kk3twt.abnormal.tools.MainGUI")
-}
-
 group = "kk3twt.abnormal.tools"
 
 repositories {
@@ -33,6 +23,12 @@ dependencies {
     testImplementation("org.hamcrest:hamcrest-core:1.3")
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 tasks {
     compileJava {
         options.encoding = "UTF-8"
@@ -45,9 +41,9 @@ tasks.jar {
             "Main-Class" to "kk3twt.abnormal.tools.MainGUI" // 替换为你的主类全限定名
         )
     }
-}
-
-tasks.register<Copy>("copyDependencies") {
-    from(configurations.runtimeClasspath)
-    into("$buildDir/libs/lib")
+    // 将依赖打包进 JAR
+    from(configurations.runtimeClasspath.get().map {
+        if (it.isDirectory) it else zipTree(it)
+    })
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
