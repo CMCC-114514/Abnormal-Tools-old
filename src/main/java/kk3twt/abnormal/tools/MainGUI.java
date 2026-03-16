@@ -26,7 +26,7 @@ import kk3twt.abnormal.tools.otherFunctions.randomGenerator.RandomGUI;
 import kk3twt.abnormal.tools.otherFunctions.scoreBoard.ScoreBoard;
 
 // 初始化
-import kk3twt.abnormal.tools.utils.Initializer;
+import kk3twt.abnormal.tools.utils.Initializer_old;
 
 public class MainGUI extends JFrame{
     private static final Dimension BUTTON_SIZE = new Dimension(80, 40);
@@ -282,11 +282,7 @@ public class MainGUI extends JFrame{
         try {
             // 设置系统外观
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-            if (Initializer.isInitialized()) {
-                SwingUtilities.invokeLater(() -> new MainGUI(args).setVisible(true));
-            }
-
+            SwingUtilities.invokeLater(() -> new MainGUI(args).setVisible(true));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,"错误" + e.getMessage(),"错误",JOptionPane.ERROR_MESSAGE);
         }
