@@ -57,6 +57,7 @@ public class DateCalculatorGUI extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(450, 400);
         setLocationRelativeTo(null);
+        setVisible(true);
 
         initComponents();
         setupLayout();
@@ -459,6 +460,6 @@ public class DateCalculatorGUI extends JFrame {
      * @param args 命令行参数（未使用）
      */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new DateCalculatorGUI().setVisible(true));
+        SwingUtilities.invokeLater(DateCalculatorGUI::new);
     }
 }

@@ -4,11 +4,16 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
+/**
+ * 几何计算器的图形用户界面。
+ * 继承自 JFrame，使用 JTabbedPane 提供多个选项卡，每个选项卡对应一种几何图形的计算。
+ * 用户输入参数后点击“计算”按钮，程序调用 Calculators 类中的方法进行计算并显示结果。
+ */
 public class GeometricCalculatorGUI extends JFrame {
     private JPanel mainPanel;
     private JTabbedPane tabbedPane;
 
-    // 各个计算面板
+    // 各个计算面板（对应不同的几何图形）
     private JPanel rectanglePanel;
     private JPanel circlePanel;
     private JPanel trianglePanel;
@@ -19,11 +24,15 @@ public class GeometricCalculatorGUI extends JFrame {
     private JPanel cuboidPanel;
     private JPanel cylinderPanel;
 
+    /**
+     * 构造函数，初始化窗口属性并构建界面。
+     */
     public GeometricCalculatorGUI() {
         setTitle("几何计算器");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(450, 400);
         setLocationRelativeTo(null);
+        setVisible(true);
 
         initComponents();
         setupLayout();
@@ -31,6 +40,11 @@ public class GeometricCalculatorGUI extends JFrame {
         setContentPane(mainPanel);
     }
 
+    /**
+     * 初始化所有界面组件。
+     * 创建主面板、选项卡面板，并调用各个创建面板的方法。
+     * 最后添加一个状态栏提示信息。
+     */
     private void initComponents() {
         mainPanel = new JPanel(new BorderLayout());
         tabbedPane = new JTabbedPane();
@@ -46,7 +60,7 @@ public class GeometricCalculatorGUI extends JFrame {
         createCuboidPanel();
         createCylinderPanel();
 
-        // 添加标签页
+        // 将面板添加到选项卡中
         tabbedPane.addTab("矩形", rectanglePanel);
         tabbedPane.addTab("圆形", circlePanel);
         tabbedPane.addTab("三角形", trianglePanel);
@@ -59,7 +73,7 @@ public class GeometricCalculatorGUI extends JFrame {
 
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
 
-        // 添加状态栏
+        // 添加状态栏提示
         JLabel infoLabel = new JLabel(
                 "<html><center>输入数值进行计算，所有的输入都必须为整数</center></html>",
                 SwingConstants.CENTER
@@ -69,6 +83,10 @@ public class GeometricCalculatorGUI extends JFrame {
         mainPanel.add(infoLabel, BorderLayout.SOUTH);
     }
 
+    /**
+     * 创建矩形计算面板。
+     * 包含长度、宽度的输入框，计算按钮，以及结果显示区域。
+     */
     private void createRectanglePanel() {
         rectanglePanel = new JPanel(new BorderLayout(10, 10));
         rectanglePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -99,7 +117,7 @@ public class GeometricCalculatorGUI extends JFrame {
         rectanglePanel.add(inputPanel, BorderLayout.NORTH);
         rectanglePanel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 按钮事件：获取输入，调用 Calculators.rectangle()，显示结果
         calculateButton.addActionListener(e -> {
             try {
                 double length = Double.parseDouble(lengthField.getText().trim());
@@ -127,6 +145,10 @@ public class GeometricCalculatorGUI extends JFrame {
         });
     }
 
+    /**
+     * 创建圆形计算面板。
+     * 包含已知条件选择下拉框、数值输入框，计算按钮，结果显示区域。
+     */
     private void createCirclePanel() {
         circlePanel = new JPanel(new BorderLayout(10, 10));
         circlePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -157,10 +179,10 @@ public class GeometricCalculatorGUI extends JFrame {
         circlePanel.add(inputPanel, BorderLayout.NORTH);
         circlePanel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 按钮事件：获取选择类型和数值，调用 Calculators.circle()，显示结果
         calculateButton.addActionListener(e -> {
             try {
-                byte choice = (byte)(typeCombo.getSelectedIndex() + 1);
+                byte choice = (byte) (typeCombo.getSelectedIndex() + 1);
                 double value = Double.parseDouble(valueField.getText().trim());
 
                 double[] results = Calculators.circle(choice, value);
@@ -191,6 +213,9 @@ public class GeometricCalculatorGUI extends JFrame {
         });
     }
 
+    /**
+     * 创建三角形面积计算面板。
+     */
     private void createTrianglePanel() {
         trianglePanel = new JPanel(new BorderLayout(10, 10));
         trianglePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -221,7 +246,7 @@ public class GeometricCalculatorGUI extends JFrame {
         trianglePanel.add(inputPanel, BorderLayout.NORTH);
         trianglePanel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 按钮事件
         calculateButton.addActionListener(e -> {
             try {
                 double base = Double.parseDouble(baseField.getText().trim());
@@ -241,6 +266,9 @@ public class GeometricCalculatorGUI extends JFrame {
         });
     }
 
+    /**
+     * 创建平行四边形面积计算面板。
+     */
     private void createParallelogramPanel() {
         parallelogramPanel = new JPanel(new BorderLayout(10, 10));
         parallelogramPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -271,7 +299,7 @@ public class GeometricCalculatorGUI extends JFrame {
         parallelogramPanel.add(inputPanel, BorderLayout.NORTH);
         parallelogramPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 按钮事件
         calculateButton.addActionListener(e -> {
             try {
                 double base = Double.parseDouble(baseField.getText().trim());
@@ -291,6 +319,9 @@ public class GeometricCalculatorGUI extends JFrame {
         });
     }
 
+    /**
+     * 创建梯形面积计算面板。
+     */
     private void createTrapezoidPanel() {
         trapezoidPanel = new JPanel(new BorderLayout(10, 10));
         trapezoidPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -324,7 +355,7 @@ public class GeometricCalculatorGUI extends JFrame {
         trapezoidPanel.add(inputPanel, BorderLayout.NORTH);
         trapezoidPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 按钮事件
         calculateButton.addActionListener(e -> {
             try {
                 double top = Double.parseDouble(topField.getText().trim());
@@ -345,6 +376,9 @@ public class GeometricCalculatorGUI extends JFrame {
         });
     }
 
+    /**
+     * 创建圆锥体计算面板。
+     */
     private void createConePanel() {
         conePanel = new JPanel(new BorderLayout(10, 10));
         conePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -375,7 +409,7 @@ public class GeometricCalculatorGUI extends JFrame {
         conePanel.add(inputPanel, BorderLayout.NORTH);
         conePanel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 按钮事件
         calculateButton.addActionListener(e -> {
             try {
                 double radius = Double.parseDouble(radiusField.getText().trim());
@@ -402,6 +436,10 @@ public class GeometricCalculatorGUI extends JFrame {
         });
     }
 
+    /**
+     * 创建球体计算面板。
+     * 包含已知条件选择、数值输入，计算按钮和结果显示。
+     */
     private void createSpherePanel() {
         spherePanel = new JPanel(new BorderLayout(10, 10));
         spherePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -432,10 +470,10 @@ public class GeometricCalculatorGUI extends JFrame {
         spherePanel.add(inputPanel, BorderLayout.NORTH);
         spherePanel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 按钮事件
         calculateButton.addActionListener(e -> {
             try {
-                byte choice = (byte)(typeCombo.getSelectedIndex() + 1);
+                byte choice = (byte) (typeCombo.getSelectedIndex() + 1);
                 double value = Double.parseDouble(valueField.getText().trim());
 
                 double[] results = Calculators.sphere(choice, value);
@@ -466,6 +504,9 @@ public class GeometricCalculatorGUI extends JFrame {
         });
     }
 
+    /**
+     * 创建长方体计算面板。
+     */
     private void createCuboidPanel() {
         cuboidPanel = new JPanel(new BorderLayout(10, 10));
         cuboidPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -499,7 +540,7 @@ public class GeometricCalculatorGUI extends JFrame {
         cuboidPanel.add(inputPanel, BorderLayout.NORTH);
         cuboidPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 按钮事件
         calculateButton.addActionListener(e -> {
             try {
                 double length = Double.parseDouble(lengthField.getText().trim());
@@ -529,6 +570,9 @@ public class GeometricCalculatorGUI extends JFrame {
         });
     }
 
+    /**
+     * 创建圆柱体计算面板。
+     */
     private void createCylinderPanel() {
         cylinderPanel = new JPanel(new BorderLayout(10, 10));
         cylinderPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -559,7 +603,7 @@ public class GeometricCalculatorGUI extends JFrame {
         cylinderPanel.add(inputPanel, BorderLayout.NORTH);
         cylinderPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 按钮事件
         calculateButton.addActionListener(e -> {
             try {
                 double radius = Double.parseDouble(radiusField.getText().trim());
@@ -586,8 +630,12 @@ public class GeometricCalculatorGUI extends JFrame {
         });
     }
 
+    /**
+     * 设置整体布局的字体样式。
+     * 遍历所有组件，为标签、按钮、文本框等设置统一的字体。
+     */
     private void setupLayout() {
-        // 设置统一的字体
+        // 定义字体
         // Font titleFont = new Font("微软雅黑", Font.BOLD, 16);
         Font labelFont = new Font("宋体", Font.PLAIN, 14);
         Font buttonFont = new Font("微软雅黑", Font.PLAIN, 14);
@@ -601,6 +649,13 @@ public class GeometricCalculatorGUI extends JFrame {
         }
     }
 
+    /**
+     * 递归设置一个面板及其子组件的字体。
+     *
+     * @param panel      要设置字体的面板
+     * @param labelFont  用于 JLabel、JTextField、JComboBox 等组件的字体
+     * @param buttonFont 用于 JButton 的字体
+     */
     private void setComponentFont(JPanel panel, Font labelFont, Font buttonFont) {
         for (Component comp : panel.getComponents()) {
             if (comp instanceof JLabel) {
@@ -619,10 +674,12 @@ public class GeometricCalculatorGUI extends JFrame {
         }
     }
 
+    /**
+     * 程序入口点，在事件调度线程中启动图形界面。
+     *
+     * @param args 命令行参数（未使用）
+     */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            GeometricCalculatorGUI gui = new GeometricCalculatorGUI();
-            gui.setVisible(true);
-        });
+        SwingUtilities.invokeLater(GeometricCalculatorGUI::new);
     }
 }

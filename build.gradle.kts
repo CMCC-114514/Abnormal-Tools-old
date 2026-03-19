@@ -27,6 +27,7 @@ repositories {
 dependencies {
     implementation("com.alibaba:fastjson:2.0.52")
 
+
     testImplementation("junit:junit:4.13.1")
     testImplementation("org.hamcrest:hamcrest-core:1.3")
 }

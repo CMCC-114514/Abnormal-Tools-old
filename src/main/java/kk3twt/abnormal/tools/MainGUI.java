@@ -25,9 +25,6 @@ import kk3twt.abnormal.tools.otherFunctions.md5.Md5GUI;
 import kk3twt.abnormal.tools.otherFunctions.randomGenerator.RandomGUI;
 import kk3twt.abnormal.tools.otherFunctions.scoreBoard.ScoreBoard;
 
-// 初始化
-import kk3twt.abnormal.tools.utils.Initializer_old;
-
 public class MainGUI extends JFrame{
     private static final Dimension BUTTON_SIZE = new Dimension(80, 40);
 
@@ -51,6 +48,7 @@ public class MainGUI extends JFrame{
         setSize(430, 300);
         setLocationRelativeTo(null);      // 使窗口居中显示
         setLayout(new BorderLayout());
+        setVisible(true);
 
         // 创建标签页
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -95,8 +93,6 @@ public class MainGUI extends JFrame{
                         某科学的工具箱
 
                         爱来自kk3TWT
-
-                        作者不会排版，别问为什么这么丑了
                         """,
                 "关于本程序",
                 JOptionPane.INFORMATION_MESSAGE

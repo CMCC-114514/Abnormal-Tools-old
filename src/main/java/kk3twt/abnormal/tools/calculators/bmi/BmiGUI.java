@@ -20,6 +20,7 @@ public class BmiGUI extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null); // 窗口居中显示
         setLayout(new BorderLayout());
+        setVisible(true);
 
         // 主面板，使用边界布局并设置内边距
         JPanel bmiPanel = new JPanel(new BorderLayout(10, 10));
@@ -95,6 +96,6 @@ public class BmiGUI extends JFrame {
      * @param args 命令行参数（未使用）
      */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new BmiGUI().setVisible(true));
+        SwingUtilities.invokeLater(BmiGUI::new);
     }
 }
