@@ -2,6 +2,7 @@ package kk3twt.abnormal.tools.utils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -130,5 +131,9 @@ public class Initializer extends JDialog {
             }
         };
         extractor.execute();
+    }
+
+    public static boolean isInitialized(String resourceName) {
+        return Files.exists(AppPath.resourcePath(resourceName));
     }
 }
