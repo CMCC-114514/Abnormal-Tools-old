@@ -38,7 +38,7 @@ public class Initializer extends JDialog {
      */
     public Initializer(int downloadMode, boolean needDownload) {
         setTitle(needDownload ? "下载依赖" : "解压依赖");
-        setSize(400, 150);
+        setSize(400, 100);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setModal(true); // 模态阻塞
@@ -88,7 +88,6 @@ public class Initializer extends JDialog {
                             "下载失败: " + e.getMessage(),
                             "错误",
                             JOptionPane.ERROR_MESSAGE);
-                    dispose();
                 }
             }
         };
@@ -119,21 +118,61 @@ public class Initializer extends JDialog {
                     }
 
                     JOptionPane.showMessageDialog(null, "依赖下载完成");
-
-                    dispose();
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(Initializer.this,
                             "解压失败: " + e.getMessage() + "，请尝试手动解压依赖",
                             "错误",
                             JOptionPane.ERROR_MESSAGE);
-                    dispose();
                 }
+                progressDialog.dispose();
+
+                statusLabel.setText("现在可以关闭这个窗口了");
             }
         };
         extractor.execute();
+        extractor.showDialog();
     }
 
-    public static boolean isInitialized(String resourceName) {
-        return Files.exists(AppPath.resourcePath(resourceName));
+    /**
+     * 检查并执行初始化（若需要）
+     * @return true 初始化已完成或无需初始化；false 初始化失败或未完成
+     */
+    public static boolean isInitialized(int downloadMode, String resourceName) {
+        Path resourcePath = AppPath.resourcePath(resourceName);
+        if (Files.exists(resourcePath)) {
+            return true;
+        }
+
+        // 需要初始化，显示模态对话框阻塞直到完成
+        try {
+            if (SwingUtilities.isEventDispatchThread()) {
+                runInitialization(downloadMode, resourceName);
+            } else {
+                SwingUtilities.invokeAndWait(() -> Initializer.runInitialization(downloadMode, resourceName));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                    String.format("初始化过程出错: %s\n请手动处理依赖。", e.getMessage()),
+                    "错误",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        return Files.exists(resourcePath);
+    }
+
+    private static void runInitialization(int downloadMode, String resourceName) {
+        Path resources = AppPath.resourcePath(resourceName + ".zip");
+        try {
+            if (!Files.exists(resources)) {
+                new Initializer(downloadMode, true).setVisible(true);
+            } else {
+                new Initializer(downloadMode, false).setVisible(true);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                    "初始化对话框显示失败: " + e.getMessage(),
+                    "错误",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

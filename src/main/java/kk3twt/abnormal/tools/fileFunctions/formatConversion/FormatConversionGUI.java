@@ -1,18 +1,16 @@
 package kk3twt.abnormal.tools.fileFunctions.formatConversion;
 
-import kk3twt.abnormal.tools.utils.AppPath;
 import kk3twt.abnormal.tools.utils.Initializer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.nio.file.Files;
 
 /**
  * 音视频格式转换的主界面。
  * 使用选项卡面板分别提供图片、音频、视频格式转换功能。
  * 音频与视频转换基于 FFmpeg，图片转换基于 Java 原生 ImageIO。
  */
-public class formatConversionGUI extends JFrame {
+public class FormatConversionGUI extends JFrame {
 
     private JPanel mainPanel;
     private JPanel imageConverterPanel;
@@ -22,7 +20,7 @@ public class formatConversionGUI extends JFrame {
     /**
      * 构造转换器窗口，初始化界面并显示。
      */
-    public formatConversionGUI() {
+    public FormatConversionGUI() {
         setTitle("音视频格式转换");
         setSize(400, 225);
         setLocationRelativeTo(null);
@@ -203,10 +201,8 @@ public class formatConversionGUI extends JFrame {
      * @param args 命令行参数（未使用）
      */
     public static void main(String[] args) {
-        if (Files.exists(AppPath.resourcePath("ffmpeg"))) {
-            SwingUtilities.invokeLater(formatConversionGUI::new);
-        } else {
-            new Initializer(0, true);
+        if (Initializer.isInitialized(0, "ffmpeg")) {
+            SwingUtilities.invokeLater(FormatConversionGUI::new);
         }
     }
 }

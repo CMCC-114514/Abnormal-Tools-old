@@ -1,7 +1,5 @@
 package kk3twt.abnormal.tools.fileFunctions.imageScramble;
 
-import kk3twt.abnormal.tools.fileFunctions.formatConversion.formatConversionGUI;
-import kk3twt.abnormal.tools.utils.AppPath;
 import kk3twt.abnormal.tools.utils.Initializer;
 
 import javax.imageio.ImageIO;
@@ -11,7 +9,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 /**
  * 图片与视频混淆工具的主界面。
@@ -347,10 +344,8 @@ public class ScramblerGUI extends JFrame {
      * @param args 命令行参数（未使用）
      */
     public static void main(String[] args) {
-        if (Files.exists(AppPath.resourcePath("ffmpeg"))) {
-            SwingUtilities.invokeLater(formatConversionGUI::new);
-        } else {
-            new Initializer(0, true);
+        if (Initializer.isInitialized(0, "ffmpeg")) {
+            SwingUtilities.invokeLater(ScramblerGUI::new);
         }
     }
 }

@@ -22,7 +22,7 @@ public class ZipExtractor extends SwingWorker<Void, Integer> {
     private final Path filePath;
     private final Path target;
 
-    private JDialog progressDialog;
+    protected JDialog progressDialog;
     private JProgressBar progressBar;
     private JLabel progressLabel;
 
@@ -98,6 +98,13 @@ public class ZipExtractor extends SwingWorker<Void, Integer> {
     }
 
     /**
+     * 显示进度条窗口
+     */
+    public void showDialog() {
+        progressDialog.setVisible(true);
+    }
+
+    /**
      * 后台执行解压任务。
      *
      * @return null
@@ -105,8 +112,6 @@ public class ZipExtractor extends SwingWorker<Void, Integer> {
      */
     @Override
     protected Void doInBackground() throws Exception {
-        SwingUtilities.invokeLater(() -> progressDialog.setVisible(true));
-
         calculateTotalBytes();
 
         if (!Files.exists(target)) {
@@ -150,10 +155,15 @@ public class ZipExtractor extends SwingWorker<Void, Integer> {
     }
 
     /** 根据已解压字节数更新进度百分比 */
+    private long lastUpdate = 0;
+
     private void updateProgress() {
         if (totalBytes == 0) return;
+
+        if (extractedBytes - lastUpdate < 1024 * 1024) return;
+        lastUpdate = extractedBytes;
+
         int percent = (int) ((extractedBytes * 100) / totalBytes);
-        setProgress(percent);
         publish(percent);
     }
 
@@ -196,6 +206,6 @@ public class ZipExtractor extends SwingWorker<Void, Integer> {
                     "错误",
                     JOptionPane.ERROR_MESSAGE);
         }
-        progressDialog.setVisible(false);
+        progressDialog.dispose();
     }
 }

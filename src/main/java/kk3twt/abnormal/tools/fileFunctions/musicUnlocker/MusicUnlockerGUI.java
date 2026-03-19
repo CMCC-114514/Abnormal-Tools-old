@@ -1,13 +1,11 @@
 package kk3twt.abnormal.tools.fileFunctions.musicUnlocker;
 
-import kk3twt.abnormal.tools.utils.AppPath;
 import kk3twt.abnormal.tools.utils.Initializer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -143,10 +141,8 @@ public class MusicUnlockerGUI extends JFrame {
      * @param args 命令行参数（未使用）
      */
     public static void main(String[] args) {
-        if (Files.exists(AppPath.resourcePath("um"))) {
+        if (Initializer.isInitialized(1, "um")) {
             SwingUtilities.invokeLater(MusicUnlockerGUI::new);
-        } else {
-            new Initializer(1, true);
         }
     }
 }

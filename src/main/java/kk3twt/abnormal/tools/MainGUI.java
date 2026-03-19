@@ -14,7 +14,7 @@ import kk3twt.abnormal.tools.calculators.houseLoan.HouseLoanGUI;
 
 // 文件功能
 import kk3twt.abnormal.tools.fileFunctions.imageScramble.ScramblerGUI;
-import kk3twt.abnormal.tools.fileFunctions.formatConversion.formatConversionGUI;
+import kk3twt.abnormal.tools.fileFunctions.formatConversion.FormatConversionGUI;
 import kk3twt.abnormal.tools.fileFunctions.musicUnlocker.MusicUnlockerGUI;
 import kk3twt.abnormal.tools.fileFunctions.fileDownloader.FileDownloaderGUI;
 
@@ -221,7 +221,7 @@ public class MainGUI extends JFrame{
 
         // 按钮监听
         musicUnlock.addActionListener(e -> MusicUnlockerGUI.main(args));
-        formatConversion.addActionListener(e -> formatConversionGUI.main(args));
+        formatConversion.addActionListener(e -> FormatConversionGUI.main(args));
         fileDownload.addActionListener(e -> FileDownloaderGUI.main(args));
         imageScramble.addActionListener(e -> ScramblerGUI.main(args));
 

@@ -44,8 +44,11 @@ public class Downloader extends SwingWorker<Void, Integer> {
     @Override
     protected Void doInBackground() throws Exception {
 
+        System.setProperty("java.net.useSystemProxies", "true");
+
         HttpClient client = HttpClient.newBuilder()
                 .followRedirects(HttpClient.Redirect.ALWAYS)
+                .version(HttpClient.Version.HTTP_2)
                 .build();
 
         // ===== 1. 读取本地已下载大小 =====
