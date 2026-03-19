@@ -71,6 +71,8 @@
 
 您可以在repository参看当前可用版本。
 
+**说明：** 由于本人对git版本控制还处于学习阶段，故在当前阶段千万不要创建PR或MR
+
 ### 版权说明
 
 该项目签署了MIT 授权许可，详情请参阅 [LICENSE](https://github.com/CMCC-114514/Abnormal-Tools/blob/main/LICENSE)
