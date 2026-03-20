@@ -14,11 +14,13 @@ public class ProbabilityGUI extends JFrame {
     /** 显示计算结果的文本域（不可编辑） */
     private final JTextArea resultArea = new JTextArea(8, 30);
 
-    // 四种分布对应的输入面板
+    // 不同分布模型对应的输入面板
     private JPanel binomialPanel;
     private JPanel hypergeometryPanel;
     private JPanel poissonPanel;
     private JPanel geometryPanel;
+    private JPanel uniformPanel;
+    private JPanel exponentialPanel;
 
     /**
      * 构造函数，初始化窗口并构建界面。
@@ -33,13 +35,16 @@ public class ProbabilityGUI extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // 创建四个分布的面板
+        // 创建各个分布模型的输入面板
         setBinomialPanel();
         setHypergeometryPanel();
         setPoissonPanel();
         setGeometryPanel();
+        setUniformPanel();
+        setExponentialPanel();
         JPanel[] panels = {
-                binomialPanel, hypergeometryPanel, poissonPanel, geometryPanel
+                binomialPanel, hypergeometryPanel, poissonPanel, geometryPanel, 
+                uniformPanel, exponentialPanel
         };
         int[] panelIndex = {0, -1}; // 用于记录当前显示的面板索引和下一个索引
 
@@ -75,7 +80,7 @@ public class ProbabilityGUI extends JFrame {
      */
     private static JComboBox<String> getModelBox(int[] panelIndex, JPanel mainPanel, JPanel[] panels) {
         String[] probabilityModels = {
-                "二项分布", "超几何分布", "泊松分布", "几何分布"
+                "二项分布", "超几何分布", "泊松分布", "几何分布", "均匀分布", "指数分布"
         };
         JComboBox<String> modelBox = new JComboBox<>(probabilityModels);
         modelBox.addActionListener(e -> {
@@ -195,14 +200,14 @@ public class ProbabilityGUI extends JFrame {
 
         // 计算按钮事件：计算 P(X = k)
         calculateButton.addActionListener(e -> {
-            int lambda = Integer.parseInt(lambdaField.getText().trim());
+            double lambda = Double.parseDouble(lambdaField.getText().trim());
             int k = Integer.parseInt(rvField.getText().trim());
 
             double result = Calculators.poisson(k, lambda);
 
             resultArea.setText(String.format("""
-                    泊松分布  X ~ P（%d）
-                    P（X = %d）= %.3f
+                    泊松分布  X ~ P（%.2f）
+                    P（X <= %d）= %.4f
                     """, lambda, k, result));
         });
     }
@@ -235,6 +240,76 @@ public class ProbabilityGUI extends JFrame {
                     几何分布  X ~ G（%.2f）
                     P（X = %d）= %.3f
                     """, p, k, result));
+        });
+    }
+    
+    /**
+     * 创建平均分布输入面板
+     * 包含分布上下界a, b、随机变量取值 x 的输入框和计算按钮
+     */
+    private void setUniformPanel() {
+        uniformPanel = new JPanel(new GridLayout(3, 2, 5, 5));
+        JTextField boundsField = new JTextField();
+        JTextField rvField = new JTextField();
+        JButton calculateButton = new JButton("计算");
+
+        uniformPanel.add(new JLabel("下界a与上界b（用逗号分开）："));
+        uniformPanel.add(boundsField);
+        uniformPanel.add(new JLabel("随机变量X取值："));
+        uniformPanel.add(rvField);
+        uniformPanel.add(new JLabel());
+        uniformPanel.add(calculateButton);
+
+        // 计算按钮事件：计算 P(X <= x)
+        calculateButton.addActionListener(e -> {
+            String[] bounds = boundsField.getText().trim().split(",");
+            double a = Double.parseDouble(bounds[0].trim());
+            double b = Double.parseDouble(bounds[1].trim());
+            double x = Double.parseDouble(rvField.getText().trim());
+
+            if (a > b) {
+                double t = b;
+                b = a;
+                a = t;
+            }
+
+            double result = Calculators.uniform(a, b, x);
+
+            resultArea.setText(String.format("""
+                    均匀分布  X ~ U（%.2f, %.2f）
+                    P（X <= %.2f）= %.3f
+                    """, a, b, x, result));
+        });
+    }
+
+    /**
+     * 创建指数分布输入面板
+     * 包含参数 lambda 、随机变量取值 x 的输入框和计算按钮
+     */
+    private void setExponentialPanel() {
+        exponentialPanel = new JPanel(new GridLayout(3, 2, 5, 5));
+        JTextField lambdaField = new JTextField();
+        JTextField rvField = new JTextField();
+        JButton calculateButton = new JButton("计算");
+
+        exponentialPanel.add(new JLabel("参数lambda："));
+        exponentialPanel.add(lambdaField);
+        exponentialPanel.add(new JLabel("随机变量X取值："));
+        exponentialPanel.add(rvField);
+        exponentialPanel.add(new JLabel());
+        exponentialPanel.add(calculateButton);
+
+        // 计算按钮事件：计算 P(X <= x)
+        calculateButton.addActionListener(e -> {
+            double lambda = Double.parseDouble(lambdaField.getText().trim());
+            double x = Double.parseDouble(rvField.getText().trim());
+
+            double result = Calculators.exponential(lambda, x);
+
+            resultArea.setText(String.format("""
+                    指数分布 X ~ E（%.2f）
+                    P（X <= %.2f） = %.4f
+                    """, lambda, x, result));
         });
     }
 
