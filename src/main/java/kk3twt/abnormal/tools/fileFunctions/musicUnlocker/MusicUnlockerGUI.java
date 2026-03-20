@@ -26,7 +26,7 @@ public class MusicUnlockerGUI extends JFrame {
      */
     public MusicUnlockerGUI() {
         setTitle("音乐解锁");
-        setSize(500, 200);
+        setSize(400, 225);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -129,7 +129,7 @@ public class MusicUnlockerGUI extends JFrame {
      * @return 配置好的 JLabel
      */
     private static JLabel getFooterLabel(Font font) {
-        JLabel footerLabel = new JLabel("基于um二次开发，仅用于学习和技术研究，转换后请在24小时内删除", SwingConstants.CENTER);
+        JLabel footerLabel = new JLabel("<html><center>基于um二次开发，仅用于学习和技术研究，<br>转换后请在24小时内删除<center><html>", SwingConstants.CENTER);
         footerLabel.setFont(font);
         footerLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         return footerLabel;
