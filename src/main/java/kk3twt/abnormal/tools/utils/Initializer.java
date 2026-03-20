@@ -4,48 +4,71 @@ import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 
+/**
+ * 初始化对话框，负责依赖的下载与解压。
+ * <p>
+ * 根据 {@code needDownload} 参数决定行为：
+ * <ul>
+ *     <li>若需要下载，则先启动 {@link Downloader} 下载指定依赖的 ZIP 文件，完成后自动转为解压</li>
+ *     <li>若不需要下载，则直接启动 {@link ZipExtractor} 解压已存在的依赖包</li>
+ * </ul>
+ * 解压完成后会自动删除 ZIP 文件。
+ */
 public class Initializer extends JDialog {
     private final JProgressBar progressBar = new JProgressBar(0, 100);
     private final JLabel statusLabel = new JLabel("", SwingConstants.CENTER);
-    private boolean downloadMode;
+    private final int downloadMode;
+    private boolean needDownload;
+
+    // 依赖的下载地址（实际使用时请替换为真实 URL）
+    private final String[] dependencyUrls = {
+            "https://github.com/CMCC-114514/Abnormal_Dependencies/releases/download/v0.0.3/ffmpeg.zip",
+            "https://github.com/CMCC-114514/Abnormal_Dependencies/releases/download/v0.0.3/um.zip"
+    };
+
+    // 依赖名称，用于生成 ZIP 文件名
+    private final String[] dependencyNames = {"ffmpeg", "um"};
 
     /**
-     * 创建初始化对话框
-     * @param downloadMode true：需要下载依赖；false：只需解压已存在的lib.zip
+     * 构造初始化对话框。
+     *
+     * @param downloadMode 下载模式索引（对应 dependencyUrls 和 dependencyNames 数组）
+     * @param needDownload 是否需要先下载；若为 false 则直接解压已存在的 ZIP
      */
-    public Initializer(boolean downloadMode) {
-        setTitle(downloadMode ? "下载依赖" : "解压依赖");
-        setSize(400, 150);
+    public Initializer(int downloadMode, boolean needDownload) {
+        setTitle(needDownload ? "下载依赖" : "解压依赖");
+        setSize(400, 100);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setModal(true); // 模态阻塞
 
         progressBar.setStringPainted(true);
         statusLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        statusLabel.setText(downloadMode ? "初次启动，需要下载相关依赖" : "正在解压依赖，请稍候");
+        statusLabel.setText(needDownload ? "正在下载依赖：" + dependencyNames[downloadMode] : "正在解压依赖，请稍候");
 
         setLayout(new BorderLayout(10, 10));
         add(statusLabel, BorderLayout.SOUTH);
         add(progressBar, BorderLayout.CENTER);
 
         this.downloadMode = downloadMode;
+        this.needDownload = needDownload;
         startTask();
     }
 
+    /** 根据 needDownload 启动相应的任务（下载或直接解压） */
     private void startTask() {
-        if (downloadMode) {
+        if (needDownload) {
             startDownload();
         } else {
             startExtract();
         }
     }
 
+    /** 启动下载任务，下载完成后自动切换为解压任务 */
     private void startDownload() {
-        Path target = AppPath.appHome().resolve("lib.zip");
-        String url = "https://github.com/CMCC-114514/Abnormal_Dependencies/releases/download/lib/lib.zip";
-
+        Path target = AppPath.libDir().resolve(dependencyNames[downloadMode] + ".zip");
+        String url = dependencyUrls[downloadMode];
         Downloader downloader = new Downloader(target, url) {
             @Override
             protected void done() {
@@ -53,7 +76,7 @@ public class Initializer extends JDialog {
                     get(); // 检查下载是否成功
                     // 下载成功，切换为解压模式
                     SwingUtilities.invokeLater(() -> {
-                        downloadMode = false;
+                        needDownload = false;
                         setTitle("解压依赖");
                         statusLabel.setText("正在解压依赖，请稍候");
                         progressBar.setValue(0);
@@ -65,7 +88,6 @@ public class Initializer extends JDialog {
                             "下载失败: " + e.getMessage(),
                             "错误",
                             JOptionPane.ERROR_MESSAGE);
-                    dispose();
                 }
             }
         };
@@ -79,16 +101,14 @@ public class Initializer extends JDialog {
         downloader.execute();
     }
 
+    /** 启动解压任务，解压完成后删除 ZIP 文件并关闭对话框 */
     private void startExtract() {
-        Path libZip = AppPath.appHome().resolve("resources.zip");
-        ZipExtractor extractor = new ZipExtractor(libZip, AppPath.appHome()) {
+        Path libZip = AppPath.resourcePath(dependencyNames[downloadMode] + ".zip");
+        ZipExtractor extractor = new ZipExtractor(libZip, AppPath.libDir()) {
             @Override
             protected void done() {
                 try {
                     get(); // 检查解压是否成功
-                    // 解压成功，写入初始化标记文件，并删除依赖包
-                    Path initFile = AppPath.resourcePath("isInitialized");
-                    Files.write(initFile, "1".getBytes(), StandardOpenOption.CREATE_NEW);
 
                     if (!libZip.toFile().delete()) {
                         JOptionPane.showMessageDialog(null,
@@ -97,37 +117,38 @@ public class Initializer extends JDialog {
                                 JOptionPane.ERROR_MESSAGE);
                     }
 
-                    JOptionPane.showMessageDialog(null, "初始化完成，请重新启动程序");
-
-                    System.exit(0);
+                    JOptionPane.showMessageDialog(null, "依赖下载完成");
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(Initializer.this,
-                            "解压失败: " + e.getMessage() + "，请尝试重新启动程序",
+                            "解压失败: " + e.getMessage() + "，请尝试手动解压依赖",
                             "错误",
                             JOptionPane.ERROR_MESSAGE);
-                    System.exit(-1);
                 }
+                progressDialog.dispose();
+
+                statusLabel.setText("现在可以关闭这个窗口了");
             }
         };
         extractor.execute();
+        extractor.showDialog();
     }
 
     /**
      * 检查并执行初始化（若需要）
      * @return true 初始化已完成或无需初始化；false 初始化失败或未完成
      */
-    public static boolean isInitialized() {
-        Path initFile = AppPath.resourcePath("isInitialized");
-        if (Files.exists(initFile)) {
+    public static boolean isInitialized(int downloadMode, String resourceName) {
+        Path resourcePath = AppPath.resourcePath(resourceName);
+        if (Files.exists(resourcePath)) {
             return true;
         }
 
         // 需要初始化，显示模态对话框阻塞直到完成
         try {
             if (SwingUtilities.isEventDispatchThread()) {
-                runInitialization();
+                runInitialization(downloadMode, resourceName);
             } else {
-                SwingUtilities.invokeAndWait(Initializer::runInitialization);
+                SwingUtilities.invokeAndWait(() -> Initializer.runInitialization(downloadMode, resourceName));
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
@@ -136,16 +157,16 @@ public class Initializer extends JDialog {
                     JOptionPane.ERROR_MESSAGE);
         }
 
-        return Files.exists(initFile);
+        return Files.exists(resourcePath);
     }
 
-    private static void runInitialization() {
-        Path resources = AppPath.appHome().resolve("resources.zip");
+    private static void runInitialization(int downloadMode, String resourceName) {
+        Path resources = AppPath.resourcePath(resourceName + ".zip");
         try {
             if (!Files.exists(resources)) {
-                new Initializer(true).setVisible(true);
+                new Initializer(downloadMode, true).setVisible(true);
             } else {
-                new Initializer(false).setVisible(true);
+                new Initializer(downloadMode, false).setVisible(true);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
@@ -153,10 +174,5 @@ public class Initializer extends JDialog {
                     "错误",
                     JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    // 保留main方法以便独立测试（可选）
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Initializer(true).setVisible(true));
     }
 }

@@ -3,7 +3,15 @@ package kk3twt.abnormal.tools.otherFunctions.loliconImage;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Lolicon 图片搜索的主界面。
+ * 提供输入标签、PID、选择模式（随机/PID/R18）的控件，点击按钮后打开结果窗口。
+ */
 public class LoliconGUI extends JFrame {
+
+    /**
+     * 构造主界面，初始化所有组件并设置事件监听。
+     */
     public LoliconGUI() {
         setTitle("Pixiv图片搜索");
         setSize(430, 280);
@@ -35,6 +43,7 @@ public class LoliconGUI extends JFrame {
         JButton searchButton = new JButton("来点涩图");
         mainPanel.add(searchButton);
 
+        // PID 模式切换事件
         pidMode.addActionListener(e -> {
             tagLabel.setText(pidMode.isSelected() ? "pid检索模式下不可用" : "输入标签（多标签用空格分开）：");
             tagField.setEditable(!pidMode.isSelected());
@@ -44,6 +53,7 @@ public class LoliconGUI extends JFrame {
             randomMode.setEnabled(!pidMode.isSelected());
         });
 
+        // 随机模式切换事件
         randomMode.addActionListener(e -> {
             tagLabel.setText(randomMode.isSelected() ? "随机模式下不可用" : "输入标签（多标签用空格分开）：");
             tagField.setEditable(!randomMode.isSelected());
@@ -52,6 +62,7 @@ public class LoliconGUI extends JFrame {
             pidMode.setEnabled(!randomMode.isSelected());
         });
 
+        // 搜索按钮事件
         searchButton.addActionListener(e -> {
             boolean random = randomMode.isSelected();
             boolean usePid = pidMode.isSelected();
@@ -68,11 +79,18 @@ public class LoliconGUI extends JFrame {
 
         add(mainPanel, BorderLayout.CENTER);
 
-        JLabel footerLabel = new JLabel("<html><center>使用 Lolicon API 下载涩图<br>" + "仅供学习使用，图片请在24小时内删除</center></html>", SwingConstants.CENTER);
+        // 底部免责声明
+        JLabel footerLabel = new JLabel("<html><center>使用 Lolicon API 下载涩图<br>" +
+                "仅供学习使用，图片请在24小时内删除</center></html>", SwingConstants.CENTER);
         footerLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(footerLabel, BorderLayout.SOUTH);
     }
 
+    /**
+     * 程序入口，在事件调度线程中启动 GUI。
+     *
+     * @param args 命令行参数（未使用）
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(LoliconGUI::new);
     }

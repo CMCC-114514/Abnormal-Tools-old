@@ -33,3 +33,5 @@ bin/
 ### other ###
 /build/
 /.gradle/
+/resources/
+gradle.properties

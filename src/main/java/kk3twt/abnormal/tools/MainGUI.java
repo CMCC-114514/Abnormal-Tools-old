@@ -14,7 +14,7 @@ import kk3twt.abnormal.tools.calculators.houseLoan.HouseLoanGUI;
 
 // 文件功能
 import kk3twt.abnormal.tools.fileFunctions.imageScramble.ScramblerGUI;
-import kk3twt.abnormal.tools.fileFunctions.formatConversion.formatConversionGUI;
+import kk3twt.abnormal.tools.fileFunctions.formatConversion.FormatConversionGUI;
 import kk3twt.abnormal.tools.fileFunctions.musicUnlocker.MusicUnlockerGUI;
 import kk3twt.abnormal.tools.fileFunctions.fileDownloader.FileDownloaderGUI;
 
@@ -24,9 +24,6 @@ import kk3twt.abnormal.tools.otherFunctions.loliconImage.LoliconGUI;
 import kk3twt.abnormal.tools.otherFunctions.md5.Md5GUI;
 import kk3twt.abnormal.tools.otherFunctions.randomGenerator.RandomGUI;
 import kk3twt.abnormal.tools.otherFunctions.scoreBoard.ScoreBoard;
-
-// 初始化
-import kk3twt.abnormal.tools.utils.Initializer;
 
 public class MainGUI extends JFrame{
     private static final Dimension BUTTON_SIZE = new Dimension(80, 40);
@@ -51,6 +48,7 @@ public class MainGUI extends JFrame{
         setSize(430, 300);
         setLocationRelativeTo(null);      // 使窗口居中显示
         setLayout(new BorderLayout());
+        setVisible(true);
 
         // 创建标签页
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -95,8 +93,6 @@ public class MainGUI extends JFrame{
                         某科学的工具箱
 
                         爱来自kk3TWT
-
-                        作者不会排版，别问为什么这么丑了
                         """,
                 "关于本程序",
                 JOptionPane.INFORMATION_MESSAGE
@@ -107,19 +103,11 @@ public class MainGUI extends JFrame{
         updateButton.addActionListener(e -> JOptionPane.showMessageDialog(
                 null,
                 """
-                        Abnormal-Tools v1.7.0
-                        
-                        新增：
-                        1. 计算功能 -> 概率计算：根据概率模型和相关参数进行离散型随机变量的概率计算
-                        2. 其他功能 -> Pixiv 图片搜索：根据 pid、tag 等参数进行图片检索，Lolicon API 提供支持
-                        
-                        修正：
-                        1. 删除了菜单栏，添加了“关于”标签页
-                        2. 现在可以在软件内查看更新日志了
-                        3. 修复了启动jar时报错“错误定位AppHome失败”的问题
-                        4. 修复了“视频混淆”不能调用依赖中的ffmpeg的问题
-                        5. 将依赖文件夹名称由/lib 改为了/resources
-                        6. QWQ
+                    Abnormal-Tools v1.7.1
+
+                    修正：
+                    1. 修改了初始化逻辑，现在依赖被分解成多个包，仅在使用到依赖的功能第一次启动时下载对应依赖
+                    2. “概率计算”新增了对均匀分布模型和指数分布的支持
                         """,
                 "更新日志",
                 JOptionPane.INFORMATION_MESSAGE
@@ -225,7 +213,7 @@ public class MainGUI extends JFrame{
 
         // 按钮监听
         musicUnlock.addActionListener(e -> MusicUnlockerGUI.main(args));
-        formatConversion.addActionListener(e -> formatConversionGUI.main(args));
+        formatConversion.addActionListener(e -> FormatConversionGUI.main(args));
         fileDownload.addActionListener(e -> FileDownloaderGUI.main(args));
         imageScramble.addActionListener(e -> ScramblerGUI.main(args));
 
@@ -282,11 +270,7 @@ public class MainGUI extends JFrame{
         try {
             // 设置系统外观
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-            if (Initializer.isInitialized()) {
-                SwingUtilities.invokeLater(() -> new MainGUI(args).setVisible(true));
-            }
-
+            SwingUtilities.invokeLater(() -> new MainGUI(args).setVisible(true));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,"错误" + e.getMessage(),"错误",JOptionPane.ERROR_MESSAGE);
         }

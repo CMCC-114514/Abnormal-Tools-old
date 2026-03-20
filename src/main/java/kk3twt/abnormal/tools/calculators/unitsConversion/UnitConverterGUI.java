@@ -1,4 +1,3 @@
-// kk3twt.abnormal.tools.calculators.unitsConversion.UnitConverterGUI.java
 package kk3twt.abnormal.tools.calculators.unitsConversion;
 
 import javax.swing.*;
@@ -7,15 +6,25 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Arrays;
 
+/**
+ * 单位换算器图形界面。
+ * 提供长度、面积、体积、质量、速度、温度、存储单位、进制和颜色码的换算功能。
+ * 使用选项卡切换不同类别，每个类别包含输入数值、选择单位、换算按钮和结果表格。
+ */
 public class UnitConverterGUI extends JFrame {
+
     private JPanel mainPanel;
     private JTabbedPane tabbedPane;
 
+    /**
+     * 构造函数，初始化窗口并构建界面。
+     */
     public UnitConverterGUI() {
         setTitle("单位换算器");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(450, 550);
         setLocationRelativeTo(null);
+        setVisible(true);
 
         initComponents();
         setupLayout();
@@ -23,11 +32,14 @@ public class UnitConverterGUI extends JFrame {
         setContentPane(mainPanel);
     }
 
+    /**
+     * 初始化所有组件：创建主面板、选项卡，并添加各个换算面板。
+     */
     private void initComponents() {
         mainPanel = new JPanel(new BorderLayout());
         tabbedPane = new JTabbedPane();
 
-        // 添加标签页
+        // 添加各种换算的标签页
         tabbedPane.addTab("长度换算", createPanels(Convertors.LENGTH_UNITS));
         tabbedPane.addTab("面积换算", createPanels(Convertors.AREA_UNITS));
         tabbedPane.addTab("体积换算", createPanels(Convertors.VOLUME_UNITS));
@@ -40,7 +52,7 @@ public class UnitConverterGUI extends JFrame {
 
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
 
-        // 添加说明
+        // 底部说明标签
         JLabel infoLabel = new JLabel(
                 "<html><center>输入数值并选择输入单位，系统将自动计算所有单位的换算结果<br>" +
                         "部分类型的换算支持国际单位、英制单位和市制单位之间的换算</center></html>",
@@ -51,23 +63,30 @@ public class UnitConverterGUI extends JFrame {
         mainPanel.add(infoLabel, BorderLayout.SOUTH);
     }
 
+    /**
+     * 创建通用单位换算面板（用于长度、面积、体积等有固定单位列表的类别）。
+     *
+     * @param units 单位名称数组，用于下拉框和表格第一列
+     * @return 配置好的 JPanel 对象
+     */
     private JPanel createPanels(String[] units) {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // 输入面板 - 修改布局
+        // 输入面板（使用 GridBagLayout 实现紧凑布局）
         JPanel inputPanel = new JPanel(new GridBagLayout());
         inputPanel.setBorder(new TitledBorder("长度换算输入"));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // 第一列：数值输入
+        // 数值输入标签
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0;
         inputPanel.add(new JLabel("数值:"), gbc);
 
+        // 数值输入框
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 1;
@@ -80,12 +99,13 @@ public class UnitConverterGUI extends JFrame {
         gbc.weightx = 1;
         inputPanel.add(new JLabel(" "), gbc);
 
-        // 第二列：单位选择
+        // 单位选择标签
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 0;
         inputPanel.add(new JLabel("单位:"), gbc);
 
+        // 单位下拉框
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.weightx = 1;
@@ -98,8 +118,8 @@ public class UnitConverterGUI extends JFrame {
         gbc.weightx = 1;
         inputPanel.add(new JLabel(" "), gbc);
 
-        // 第三列：按钮
-        JPanel buttonPanel = new JPanel(new GridLayout(2,1, 5, 5));
+        // 按钮面板（包含换算和清空按钮）
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         JButton convertButton = new JButton("换算");
         JButton clearButton = new JButton("清空");
         buttonPanel.add(convertButton);
@@ -125,22 +145,22 @@ public class UnitConverterGUI extends JFrame {
         panel.add(inputPanel, BorderLayout.WEST);
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 事件处理：换算按钮
         convertButton.addActionListener(e -> {
             try {
                 double value = Double.parseDouble(valueField.getText().trim());
                 int selectedIndex = unitCombo.getSelectedIndex();
-                int unitChoice = selectedIndex + 1;
+                int unitChoice = selectedIndex + 1; // 内部方法使用 1-based 索引
 
                 double[] results = getDoubleResult(unitChoice, value);
 
                 // 清空表格
                 tableModel.setRowCount(0);
 
-                // 添加结果
+                // 添加结果行
                 for (int i = 0; i < results.length; i++) {
                     String formattedResult = String.format("%.10f", results[i]);
-                    // 移除多余的零
+                    // 去掉末尾多余的零和小数点
                     formattedResult = formattedResult.replaceAll("0*$", "").replaceAll("\\.$", "");
 
                     Object[] rowData = {
@@ -159,17 +179,23 @@ public class UnitConverterGUI extends JFrame {
             }
         });
 
+        // 清空按钮
         clearButton.addActionListener(e -> {
             valueField.setText("");
             tableModel.setRowCount(0);
         });
 
-        // 回车键转换
+        // 回车键触发换算
         valueField.addActionListener(e -> convertButton.doClick());
 
         return panel;
     }
 
+    /**
+     * 创建颜色码转换面板。
+     *
+     * @return 配置好的 JPanel 对象
+     */
     private JPanel createColorCodePanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -180,7 +206,7 @@ public class UnitConverterGUI extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // 信息面板：选择编码类型
+        // 编码类型选择
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0;
@@ -198,18 +224,19 @@ public class UnitConverterGUI extends JFrame {
         gbc.weightx = 1;
         inputPanel.add(new JLabel(" "), gbc);
 
-        // 数据输入面板
+        // 数值输入标签
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 0;
         inputPanel.add(new JLabel("数值："), gbc);
 
-        JPanel hexPanel = new JPanel(new GridLayout(2,1, 10, 10));
+        // 根据所选编码类型动态切换输入面板
+        JPanel hexPanel = new JPanel(new GridLayout(2, 1, 10, 10));
         JTextField hexField = new JTextField();
         hexPanel.add(hexField);
-        hexPanel.add(new JLabel());
+        hexPanel.add(new JLabel()); // 占位
 
-        JPanel rgbPanel = new JPanel(new GridLayout(3,1, 10, 10));
+        JPanel rgbPanel = new JPanel(new GridLayout(3, 1, 10, 10));
         JTextField rField = new JTextField();
         JTextField gField = new JTextField();
         JTextField bField = new JTextField();
@@ -217,7 +244,7 @@ public class UnitConverterGUI extends JFrame {
         rgbPanel.add(gField);
         rgbPanel.add(bField);
 
-        JPanel cmykPanel = new JPanel(new GridLayout(4,1, 10, 10));
+        JPanel cmykPanel = new JPanel(new GridLayout(4, 1, 10, 10));
         JTextField cField = new JTextField();
         JTextField mField = new JTextField();
         JTextField yField = new JTextField();
@@ -241,7 +268,7 @@ public class UnitConverterGUI extends JFrame {
         inputPanel.add(new JLabel(" "), gbc);
 
         // 按钮面板
-        JPanel buttonPanel = new JPanel(new GridLayout(2,1, 5, 5));
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         JButton convertButton = new JButton("换算");
         JButton clearButton = new JButton("清空");
         buttonPanel.add(convertButton);
@@ -265,7 +292,7 @@ public class UnitConverterGUI extends JFrame {
         panel.add(inputPanel, BorderLayout.WEST);
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 下拉框切换事件：更换输入面板
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.weightx = 1;
@@ -280,11 +307,12 @@ public class UnitConverterGUI extends JFrame {
             }
         });
 
+        // 换算按钮事件
         convertButton.addActionListener(e -> {
             try {
                 String[] results = new String[3];
                 switch (codeBox.getSelectedIndex()) {
-                    case 0 : {
+                    case 0: { // RGB -> CMYK 和 HEX
                         int r = Integer.parseInt(rField.getText().trim());
                         int g = Integer.parseInt(gField.getText().trim());
                         int b = Integer.parseInt(bField.getText().trim());
@@ -295,8 +323,7 @@ public class UnitConverterGUI extends JFrame {
                         results = new String[]{Arrays.toString(rgb), Arrays.toString(cmyk), hex};
                         break;
                     }
-
-                    case 1 : {
+                    case 1: { // CMYK -> RGB 和 HEX
                         int c = Integer.parseInt(cField.getText().trim());
                         int m = Integer.parseInt(mField.getText().trim());
                         int y = Integer.parseInt(yField.getText().trim());
@@ -308,8 +335,7 @@ public class UnitConverterGUI extends JFrame {
                         results = new String[]{Arrays.toString(rgb), Arrays.toString(cmyk), hex};
                         break;
                     }
-
-                    case 2 : {
+                    case 2: { // HEX -> RGB 和 CMYK
                         String hex = hexField.getText().toUpperCase();
                         int[] rgb = Convertors.HEX2RGB(hex);
                         int[] cmyk = Convertors.RGB2CMYK(rgb);
@@ -320,14 +346,11 @@ public class UnitConverterGUI extends JFrame {
                 // 清空表格
                 tableModel.setRowCount(0);
 
-                // 添加结果
+                // 添加结果行
                 for (int i = 0; i < results.length; i++) {
-                    String formattedResult = String.format("%s", results[i]);
-                    //formattedResult = formattedResult.replaceAll("0*$", "").replaceAll("\\.$", "");
-
                     Object[] rowData = {
                             Convertors.COLOR_CODES[i],
-                            formattedResult
+                            results[i]
                     };
                     tableModel.addRow(rowData);
                 }
@@ -340,8 +363,10 @@ public class UnitConverterGUI extends JFrame {
             }
         });
 
+        // 清空按钮：仅清空表格，不清空输入框（可自行决定）
         clearButton.addActionListener(e -> tableModel.setRowCount(0));
 
+        // 回车键触发换算
         hexField.addActionListener(e -> convertButton.doClick());
         bField.addActionListener(e -> convertButton.doClick());
         kField.addActionListener(e -> convertButton.doClick());
@@ -349,18 +374,23 @@ public class UnitConverterGUI extends JFrame {
         return panel;
     }
 
+    /**
+     * 创建进制换算面板。
+     *
+     * @return 配置好的 JPanel 对象
+     */
     private JPanel createNumSystemPanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // 输入面板 - 修改布局
+        // 输入面板
         JPanel inputPanel = new JPanel(new GridBagLayout());
         inputPanel.setBorder(new TitledBorder("进制换算输入"));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // 第一列：数值输入
+        // 数值输入
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0;
@@ -378,7 +408,7 @@ public class UnitConverterGUI extends JFrame {
         gbc.weightx = 1;
         inputPanel.add(new JLabel(" "), gbc);
 
-        // 第二列：单位选择
+        // 单位选择
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 0;
@@ -396,8 +426,8 @@ public class UnitConverterGUI extends JFrame {
         gbc.weightx = 1;
         inputPanel.add(new JLabel(" "), gbc);
 
-        // 第三列：按钮
-        JPanel buttonPanel = new JPanel(new GridLayout(2,1, 5, 5));
+        // 按钮面板
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         JButton convertButton = new JButton("换算");
         JButton clearButton = new JButton("清空");
         buttonPanel.add(convertButton);
@@ -423,12 +453,12 @@ public class UnitConverterGUI extends JFrame {
         panel.add(inputPanel, BorderLayout.WEST);
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        // 事件处理
+        // 换算按钮事件
         convertButton.addActionListener(e -> {
             try {
                 String value = valueField.getText().trim();
                 int selectedIndex = unitCombo.getSelectedIndex();
-                byte unitChoice = (byte)(selectedIndex + 1);
+                byte unitChoice = (byte) (selectedIndex + 1);
 
                 String[] results = Convertors.numSystem(unitChoice, value);
 
@@ -437,11 +467,9 @@ public class UnitConverterGUI extends JFrame {
 
                 // 添加结果
                 for (int i = 0; i < results.length; i++) {
-                    String formattedResult = String.format("%s", results[i]);
-
                     Object[] rowData = {
                             Convertors.NUM_SYSTEM_UNITS[i],
-                            formattedResult
+                            results[i]
                     };
                     tableModel.addRow(rowData);
                 }
@@ -455,18 +483,25 @@ public class UnitConverterGUI extends JFrame {
             }
         });
 
+        // 清空按钮
         clearButton.addActionListener(e -> {
             valueField.setText("");
             tableModel.setRowCount(0);
         });
 
-        // 回车键转换
+        // 回车键触发换算
         valueField.addActionListener(e -> convertButton.doClick());
 
         return panel;
     }
 
-    // 返回结果是double类型的结果
+    /**
+     * 根据当前选中的选项卡，调用对应的换算方法获取 double[] 结果。
+     *
+     * @param unitChoice 输入单位的索引+1
+     * @param value      输入的数值
+     * @return 对应所有单位的换算结果数组
+     */
     private double[] getDoubleResult(int unitChoice, double value) {
         double[] results = null;
         int tabIndex = tabbedPane.getSelectedIndex();
@@ -484,14 +519,15 @@ public class UnitConverterGUI extends JFrame {
         return results;
     }
 
+    /**
+     * 设置整个界面的统一字体样式。
+     */
     private void setupLayout() {
-        // 设置统一的字体
-        // Font titleFont = new Font("微软雅黑", Font.BOLD, 16);
         Font labelFont = new Font("宋体", Font.PLAIN, 14);
         Font buttonFont = new Font("微软雅黑", Font.PLAIN, 13);
         Font tableFont = new Font("微软雅黑", Font.PLAIN, 12);
 
-        // 设置所有组件的字体
+        // 遍历选项卡中的所有组件，递归设置字体
         Component[] components = tabbedPane.getComponents();
         for (Component comp : components) {
             if (comp instanceof JPanel) {
@@ -500,6 +536,14 @@ public class UnitConverterGUI extends JFrame {
         }
     }
 
+    /**
+     * 递归设置面板及其子组件的字体。
+     *
+     * @param panel      目标面板
+     * @param labelFont  用于标签、文本框、下拉框的字体
+     * @param buttonFont 用于按钮的字体
+     * @param tableFont  用于表格的字体
+     */
     private void setComponentFont(JPanel panel, Font labelFont, Font buttonFont, Font tableFont) {
         for (Component comp : panel.getComponents()) {
             if (comp instanceof JLabel) {
@@ -513,7 +557,7 @@ public class UnitConverterGUI extends JFrame {
             } else if (comp instanceof JTable) {
                 comp.setFont(tableFont);
             } else if (comp instanceof JScrollPane) {
-                // 处理滚动面板中的组件
+                // 处理滚动面板内的表格
                 Component view = ((JScrollPane) comp).getViewport().getView();
                 if (view instanceof JTable) {
                     view.setFont(tableFont);
@@ -524,10 +568,12 @@ public class UnitConverterGUI extends JFrame {
         }
     }
 
+    /**
+     * 程序入口，在事件调度线程中启动图形界面。
+     *
+     * @param args 命令行参数（未使用）
+     */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            UnitConverterGUI gui = new UnitConverterGUI();
-            gui.setVisible(true);
-        });
+        SwingUtilities.invokeLater(UnitConverterGUI::new);
     }
 }

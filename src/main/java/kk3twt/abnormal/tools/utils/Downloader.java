@@ -9,21 +9,46 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * 支持断点续传的文件下载器，作为 SwingWorker 在后台执行下载任务。
+ * <p>
+ * 功能特性：
+ * <ul>
+ *     <li>自动处理 HTTP 重定向</li>
+ *     <li>若本地已存在部分文件，发送 Range 头尝试断点续传</li>
+ *     <li>通过进度属性（progress）发布下载进度</li>
+ * </ul>
+ */
 public class Downloader extends SwingWorker<Void, Integer> {
 
     private final Path target;
     private final String url;
 
+    /**
+     * 构造一个下载器。
+     *
+     * @param target 保存文件的本地路径
+     * @param url    下载地址
+     */
     public Downloader(Path target, String url) {
         this.target = target;
         this.url = url;
     }
 
+    /**
+     * 后台执行下载任务。
+     *
+     * @return null
+     * @throws Exception 下载过程中的异常（网络错误、文件写入错误等）
+     */
     @Override
     protected Void doInBackground() throws Exception {
 
+        System.setProperty("java.net.useSystemProxies", "true");
+
         HttpClient client = HttpClient.newBuilder()
                 .followRedirects(HttpClient.Redirect.ALWAYS)
+                .version(HttpClient.Version.HTTP_2)
                 .build();
 
         // ===== 1. 读取本地已下载大小 =====

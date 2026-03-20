@@ -4,6 +4,10 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
+/**
+ * 阶乘计算GUI类
+ * 显示图形用户界面
+ */
 public class FactorialGUI extends JFrame {
 
     private JPanel mainPanel;
@@ -11,16 +15,25 @@ public class FactorialGUI extends JFrame {
     private JPanel combinationPanel;
     private JPanel factorialPanel;
 
+    /**
+     * 构造函数
+     * 设置窗口参数
+     */
     public FactorialGUI() {
         setTitle("阶乘计算");
         setSize(350,350);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        setVisible(true);
 
         initComponents();
         setContentPane(mainPanel);
     }
 
+    /**
+     * 初始化图形构件
+     * 添加标签页
+     */
     private void initComponents() {
         mainPanel = new JPanel(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -34,6 +47,9 @@ public class FactorialGUI extends JFrame {
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
     }
 
+    /**
+     * 创建排列数面板
+     */
     private void createCombinationPanel() {
         combinationPanel = new JPanel(new BorderLayout(10, 10));
         combinationPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -67,16 +83,21 @@ public class FactorialGUI extends JFrame {
         // 事件处理
         calculateButton.addActionListener(e -> {
             try {
+                // 获取输入
                 int m = Integer.parseInt(mField.getText().trim());
                 int n = Integer.parseInt(nField.getText().trim());
 
+                // m > n 时报错
                 if (m > n) {
-                    throw new Exception("m必须小于等于n");
+                    resultArea.setText("错误：m 必须小于或等于 n");
+                    return;
                 }
 
+                // 排列数与组合数计算结果
                 long permutation = Calculators.Permutation(m, n);
                 long combination = Calculators.Combination(m, n);
 
+                // 输出结果
                 String outText = String.format("""
                         排列数A：%d
                         组合数C：%d
@@ -90,6 +111,9 @@ public class FactorialGUI extends JFrame {
         });
     }
 
+    /**
+     * 创建阶乘计算面板
+     */
     private void createFactorialPanel() {
         factorialPanel = new JPanel(new BorderLayout(10, 10));
         factorialPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -119,14 +143,19 @@ public class FactorialGUI extends JFrame {
         // 事件处理
         calculateButton.addActionListener(e -> {
             try {
+                // 接收输入
                 int m = Integer.parseInt(mField.getText().trim());
 
+                // m < 0 时报错
                 if (m < 0) {
-                    throw new Exception("输入的数字必须大等于0");
+                    resultArea.setText("错误：输入的数字必须大于或等于0");
+                    return;
                 }
 
+                // 计算结果
                 long factorial = Calculators.Factorial(m);
 
+                // 输出结果
                 String outText = String.format("""
                         %d 的阶乘：%d
                         """, m, factorial);
@@ -139,7 +168,11 @@ public class FactorialGUI extends JFrame {
         });
     }
 
+    /**
+     * 程序入口
+     * @param args 命令行指令
+     */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new FactorialGUI().setVisible(true));
+        SwingUtilities.invokeLater(FactorialGUI::new);
     }
 }
