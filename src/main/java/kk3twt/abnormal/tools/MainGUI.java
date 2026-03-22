@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 // 计算功能
+import kk3twt.abnormal.tools.calculators.calculus.CalculusGUI;
 import kk3twt.abnormal.tools.calculators.date.DateCalculatorGUI;
 import kk3twt.abnormal.tools.calculators.factorial.FactorialGUI;
 import kk3twt.abnormal.tools.calculators.geometry.GeometricCalculatorGUI;
@@ -108,7 +109,7 @@ public class MainGUI extends JFrame{
                     修正：
                     1. 修改了初始化逻辑，现在依赖被分解成多个包，仅在使用到依赖的功能第一次启动时下载对应依赖
                     2. “概率计算”新增了对均匀分布模型和指数分布的支持
-                        """,
+                    """,
                 "更新日志",
                 JOptionPane.INFORMATION_MESSAGE
         ));
@@ -150,6 +151,7 @@ public class MainGUI extends JFrame{
         JButton houseLoanCalculation = new JButton("房贷计算");
         JButton factorialCalculation = new JButton("阶乘计算");
         JButton probabilityCalculation = new JButton("概率计算");
+        JButton calculusCalculation = new JButton("简单定积分");
 
         // 设置按钮字体
         dateCalculation.setFont(font);
@@ -159,6 +161,7 @@ public class MainGUI extends JFrame{
         houseLoanCalculation.setFont(font);
         factorialCalculation.setFont(font);
         probabilityCalculation.setFont(font);
+        calculusCalculation.setFont(font);
 
         // 设置按钮大小
         dateCalculation.setPreferredSize(BUTTON_SIZE);
@@ -168,6 +171,7 @@ public class MainGUI extends JFrame{
         houseLoanCalculation.setPreferredSize(BUTTON_SIZE);
         factorialCalculation.setPreferredSize(BUTTON_SIZE);
         probabilityCalculation.setPreferredSize(BUTTON_SIZE);
+        calculusCalculation.setPreferredSize(BUTTON_SIZE);
 
         // 按钮监听
         dateCalculation.addActionListener(e -> DateCalculatorGUI.main(args));
@@ -177,6 +181,7 @@ public class MainGUI extends JFrame{
         houseLoanCalculation.addActionListener(e -> HouseLoanGUI.main(args));
         factorialCalculation.addActionListener(e -> FactorialGUI.main(args));
         probabilityCalculation.addActionListener(e -> ProbabilityGUI.main(args));
+        calculusCalculation.addActionListener(e -> CalculusGUI.main(args));
 
         // 添加按钮到面板
         calculatorPanel.add(dateCalculation);
@@ -186,6 +191,7 @@ public class MainGUI extends JFrame{
         calculatorPanel.add(houseLoanCalculation);
         calculatorPanel.add(factorialCalculation);
         calculatorPanel.add(probabilityCalculation);
+        calculatorPanel.add(calculusCalculation);
     }
 
     // 文件功能
