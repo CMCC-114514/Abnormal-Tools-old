@@ -40,6 +40,8 @@ public class ImageInfo {
 
         lolicon += "r18=" + r18;
 
+        System.setProperty("java.net.useSystemProxies", "true");
+
         // 创建 HttpClient
         HttpClient client = HttpClient.newHttpClient();
 

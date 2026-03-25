@@ -27,9 +27,13 @@ repositories {
 dependencies {
     implementation("com.alibaba:fastjson:2.0.52")
 
-
-    testImplementation("junit:junit:4.13.1")
     testImplementation("org.hamcrest:hamcrest-core:1.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks {
@@ -44,6 +48,13 @@ tasks.jar {
             "Main-Class" to "kk3twt.abnormal.tools.MainGUI" // 替换为你的主类全限定名
         )
     }
+
+    // 将所有依赖打包进 JAR
+    from(configurations.runtimeClasspath.get().map {
+        if (it.isDirectory) it else zipTree(it)
+    })
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.register<Copy>("copyDependencies") {

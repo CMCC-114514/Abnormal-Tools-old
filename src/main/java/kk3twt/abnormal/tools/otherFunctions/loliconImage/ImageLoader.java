@@ -45,6 +45,7 @@ public class ImageLoader extends SwingWorker<ImageIcon, Void> {
      */
     @Override
     protected ImageIcon doInBackground() {
+        System.setProperty("java.net.useSystemProxies", "true");
         try {
             // 从 URL 读取原始图片
             URL url = new URL(imageUrl);

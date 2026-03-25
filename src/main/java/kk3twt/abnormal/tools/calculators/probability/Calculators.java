@@ -8,7 +8,6 @@ package kk3twt.abnormal.tools.calculators.probability;
 public class Calculators {
 
     private static final double E = 2.7182818285;
-    private static final double PI = 3.1415926535;
 
     /**
      * 私有构造方法，防止外部实例化工具类。
@@ -128,8 +127,5 @@ public class Calculators {
         }
     }
 
-    // public static double normal(double mu, double sigma, double x) {
-    //     double z = (x - mu) / sigma;
-    //     return 0.5 * (1 + Math.erf(z / Math.sqrt(2)));
-    // }
+
 }
