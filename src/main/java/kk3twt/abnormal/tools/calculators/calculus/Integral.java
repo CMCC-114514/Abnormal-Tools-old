@@ -71,16 +71,16 @@ public class Integral {
      */
     public Integral(double A, double omega, double phi, boolean isCos) {
         this.A = A;
-        this.omega = omega;
-        this.phi = phi;
+        this.m = omega;
+        this.n = phi;
 
         double PI = 3.1415926535;
         if (isCos)
-            this.phi += PI / 2;  // cos 函数处理，相位相差 pi/2
+            this.n += PI / 2;  // cos 函数处理，相位相差 pi/2
     }
     private double A = 0;
-    private double omega = 0;
-    private double phi = 0;
+//    private double omega = 0;
+//    private double phi = 0;
 
     /**
      * 返回正弦函数 y = Asin(wx + phi) 的值
@@ -88,7 +88,7 @@ public class Integral {
      * @return 函数值
      */
     private double sine(double x) {
-        return A * Math.sin(omega * x + phi);
+        return A * Math.sin(linear(x));
     }
 
     //////////////////////////////////////////////////////////////////////////////
@@ -119,6 +119,10 @@ public class Integral {
      * @return 函数值
      */
     private double exponential(double x) {
+        if (isLn && linear(x) <= 0) {
+            return Double.NaN;
+        }
+
         return isLn ? C * Math.log(linear(x)) + k : C * Math.exp(linear(x)) + k;
     }
 

@@ -33,8 +33,8 @@ public class ProbabilityGUI extends JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
 
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 5));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
 
         // 创建各个分布模型的输入面板
         setBinomialPanel();
@@ -48,7 +48,9 @@ public class ProbabilityGUI extends JFrame {
                 binomialPanel, hypergeometryPanel, poissonPanel, geometryPanel, 
                 uniformPanel, exponentialPanel, normalPanel
         };
-        int[] panelIndex = {0, -1}; // 用于记录当前显示的面板索引和下一个索引
+        String[] probabilityModels = {
+                "二项分布", "超几何分布", "泊松分布", "几何分布", "均匀分布", "指数分布", "正态分布"
+        };
 
         // 设置结果显示区域
         resultArea.setEditable(false);
@@ -56,47 +58,18 @@ public class ProbabilityGUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(resultArea);
         scrollPane.setBorder(new TitledBorder("计算结果"));
 
-        // 创建下拉框，用于选择分布类型
-        JPanel boxPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-        JComboBox<String> modelBox = getModelBox(panelIndex, mainPanel, panels);
-        boxPanel.add(new JLabel("概率模型："));
-        boxPanel.add(modelBox);
+        // 创建标签页，选择概率模型
+        JTabbedPane tabbedPane = new JTabbedPane();
+        for (int i = 0; i < panels.length; i++) {
+            panels[i].setBorder(new TitledBorder("输入参数"));
+            tabbedPane.add(probabilityModels[i], panels[i]);
+        }
 
         // 将各组件添加到主面板
-        mainPanel.add(boxPanel, BorderLayout.NORTH);
-        mainPanel.add(binomialPanel, BorderLayout.CENTER); // 默认显示二项分布面板
+        mainPanel.add(tabbedPane, BorderLayout.CENTER);
         mainPanel.add(scrollPane, BorderLayout.SOUTH);
 
-        add(mainPanel);
-    }
-
-    /**
-     * 从构造函数中提取出来的方法
-     * 用于创建概率模型下拉框
-     * 输入面板会随着下拉框的值而改变
-     *
-     * @param panelIndex 下拉框主体
-     * @param mainPanel 下拉框的父组件（主面板）
-     * @param panels 输入面板
-     * @return 概率模型下拉框
-     */
-    private static JComboBox<String> getModelBox(int[] panelIndex, JPanel mainPanel, JPanel[] panels) {
-        String[] probabilityModels = {
-                "二项分布", "超几何分布", "泊松分布", "几何分布", "均匀分布", "指数分布", "正态分布"
-        };
-        JComboBox<String> modelBox = new JComboBox<>(probabilityModels);
-        modelBox.addActionListener(e -> {
-            // 当下拉框选项改变时，切换中央面板显示的输入面板
-            if (panelIndex[0] != modelBox.getSelectedIndex()) {
-                panelIndex[1] = modelBox.getSelectedIndex();
-                mainPanel.add(panels[panelIndex[1]], BorderLayout.CENTER);
-                mainPanel.remove(panels[panelIndex[0]]);
-                mainPanel.revalidate();
-                mainPanel.repaint();
-                panelIndex[0] = panelIndex[1];
-            }
-        });
-        return modelBox;
+        setContentPane(mainPanel);
     }
 
     /**
@@ -381,6 +354,10 @@ public class ProbabilityGUI extends JFrame {
                 double mu = Double.parseDouble(muField.getText().trim());
                 double sigma = Double.parseDouble(sigmaField.getText().trim());
                 double x = Double.parseDouble(rvField.getText().trim());
+
+                if (sigma <= 0) {
+                    throw new Exception("sigma的值必须大于零！");
+                }
 
                 NormalDistribution normal = new NormalDistribution(mu, sigma);
                 double result = normal.calculate(x);

@@ -12,60 +12,14 @@ public final class AppPath {
     private AppPath() {}
 
     /**
-     * 返回应用程序的根目录路径。
-     * <p>
-     * 路径判断规则：
-     * <ul>
-     *     <li>开发期（在 build/classes 下运行时）：返回项目根目录</li>
-     *     <li>发布期（作为 .jar 或 .exe 运行时）：返回 jar/exe 所在目录</li>
-     *     <li>其他情况：抛出 IllegalStateException</li>
-     * </ul>
-     *
-     * @return 应用根目录的 Path 对象
-     * @throws RuntimeException 如果无法定位根目录
-     */
-    public static Path appHome() {
-        try {
-            Path location = Paths.get(
-                    AppPath.class.getProtectionDomain()
-                            .getCodeSource()
-                            .getLocation()
-                            .toURI()
-            );
-
-            String path = location.toString().replace("\\", "/");
-
-            // ① 开发期：在 build/classes 下运行
-            if (path.contains("/build/classes/")) {
-                // 回到项目根目录
-                return location
-                        .getParent()    // main
-                        .getParent()    // java
-                        .getParent()    // classes
-                        .getParent();   // build
-            }
-
-            // ② 发布期：jar 在 app 目录
-            if (path.endsWith(".exe") || path.endsWith(".jar")) {
-                return location.getParent();
-            }
-
-            throw new IllegalStateException("无法识别运行环境: " + path);
-
-        } catch (Exception e) {
-            throw new RuntimeException("定位 appHome 失败", e);
-        }
-    }
-
-    /**
-     * 返回资源目录（默认为应用根目录下的 "resources" 文件夹）。
+     * 返回资源目录（默认为“文档”下的 "Abnormal-Dependencies" 文件夹）。
      * 如果目录不存在，会自动创建。
      *
      * @return 资源目录的 Path 对象
      * @throws RuntimeException 如果目录创建失败
      */
-    public static Path libDir() {
-        Path lib = appHome().resolve("resources");
+    public static Path resDir() {
+        Path lib = Path.of(System.getProperty("user.home")).resolve("Documents").resolve("Abnormal-Dependencies");
         try {
             Files.createDirectories(lib);
         } catch (Exception e) {
@@ -81,7 +35,7 @@ public final class AppPath {
      * @return 资源文件的完整 Path 对象
      */
     public static Path resourcePath(String name) {
-        return libDir().resolve(name);
+        return resDir().resolve(name);
     }
 
     /**
@@ -90,6 +44,6 @@ public final class AppPath {
      * @param args 命令行参数（未使用）
      */
     public static void main(String[] args) {
-        System.out.println(appHome());
+        System.out.println(resDir());
     }
 }

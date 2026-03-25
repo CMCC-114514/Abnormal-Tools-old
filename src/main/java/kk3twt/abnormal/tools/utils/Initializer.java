@@ -67,7 +67,7 @@ public class Initializer extends JDialog {
 
     /** 启动下载任务，下载完成后自动切换为解压任务 */
     private void startDownload() {
-        Path target = AppPath.libDir().resolve(dependencyNames[downloadMode] + ".zip");
+        Path target = AppPath.resDir().resolve(dependencyNames[downloadMode] + ".zip");
         String url = dependencyUrls[downloadMode];
         Downloader downloader = new Downloader(target, url) {
             @Override
@@ -104,7 +104,7 @@ public class Initializer extends JDialog {
     /** 启动解压任务，解压完成后删除 ZIP 文件并关闭对话框 */
     private void startExtract() {
         Path libZip = AppPath.resourcePath(dependencyNames[downloadMode] + ".zip");
-        ZipExtractor extractor = new ZipExtractor(libZip, AppPath.libDir()) {
+        ZipExtractor extractor = new ZipExtractor(libZip, AppPath.resDir()) {
             @Override
             protected void done() {
                 try {

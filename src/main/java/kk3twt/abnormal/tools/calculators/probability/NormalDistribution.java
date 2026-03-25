@@ -2,11 +2,11 @@ package kk3twt.abnormal.tools.calculators.probability;
 
 public class NormalDistribution {
 
-    private static final double PI = 3.1415926535;
-    private static final double E = 2.7182818285;
+    private static final double PI = 3.141592653589793;
+    private static final double E = 2.718281828459045;
 
-    private double mu;
-    private double sigma;
+    private final double mu;
+    private final double sigma;
 
     public NormalDistribution(double mu, double sigma) {
         this.mu = mu;
@@ -14,8 +14,8 @@ public class NormalDistribution {
     }
 
     public double normal(double x) {
-        double z = (x - mu) / sigma;        // 标准化
-        return (1 / Math.sqrt(2 * PI)) * Math.pow(E, -z*z / 2);     // 返回标准正态分布值
+        double exp = -Math.pow(x - mu, 2) / (2 * sigma * sigma);
+        return (1 / (Math.sqrt(2 * PI) * sigma)) * Math.pow(E, exp);     // 返回正态分布值
     }
     
     private double integral(double a, double x, double tolerance, int maxDepth) {
@@ -38,5 +38,10 @@ public class NormalDistribution {
     public double calculate(double x) {
         double lowerLimit = mu - 4 * sigma;
         return integral(lowerLimit, x, 1e-7, 50);
+    }
+
+    public static void main(String[] args) {
+        NormalDistribution nb = new NormalDistribution(0,1);
+        System.out.println(nb.calculate(-4));
     }
 }
