@@ -73,7 +73,7 @@ public class LoliconGUI extends JFrame {
             try {
                 new ImageThumbnail(random, usePid, pid, r18, tags);
             } catch (Exception ex) {
-                throw new RuntimeException(ex);
+                JOptionPane.showMessageDialog(this, "错误：" + ex.getMessage());
             }
         });
 

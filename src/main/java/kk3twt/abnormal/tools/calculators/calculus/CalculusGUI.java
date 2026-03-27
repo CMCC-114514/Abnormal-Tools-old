@@ -278,7 +278,7 @@ public class CalculusGUI extends JFrame {
                 JOptionPane.showMessageDialog(this,
                         String.format("""
                         错误：请输入正确的数字！
-                        error：%s
+                        %s
                         """, ex.getMessage()), "错误", JOptionPane.ERROR_MESSAGE);
             }
         });
