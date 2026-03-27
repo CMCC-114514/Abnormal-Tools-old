@@ -258,3 +258,13 @@
 修正：
 1. 将依赖下载目录改为“C:\Users\username\Documents\Abnormal_Dependencies”
 2. 现在应用使用安装包安装，将自带jre环境，无需手动配置环境了
+
+#### Abnormal-Tools v1.8.0
+
+新增：
+1. 计算功能 -> 简单定积分：目前支持四种初等函数的定积分计算，用户可选择函数类型、输入参数、积分区间和精度，计算定积分结果。
+
+修正：
+1. 概率计算新增“正态分布”模型支持
+2. 将依赖下载目录改为“C:\Users\username\Documents\Abnormal_Dependencies”
+3. 现在应用使用安装包安装，将自带jre环境，无需手动配置环境了

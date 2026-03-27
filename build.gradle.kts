@@ -185,14 +185,14 @@ tasks.register("createInstaller") {
             "--main-class", "kk3twt.abnormal.tools.MainGUI",
             "--runtime-image", file("$buildDir/custom-jre").absolutePath,
             "--dest", installerOutput.absolutePath,
-            "--win-console",          // 调试时可保留，正式发布可去掉
+            //"--win-console",          // 调试时可保留，正式发布可去掉
             "--win-dir-chooser",
             "--win-menu",
             "--win-shortcut"
         )
-        // 可选：添加图标
-        // val icon = file("src/main/resources/app.ico")
-        // if (icon.exists()) command.addAll(listOf("--icon", icon.absolutePath))
+        // 添加图标
+        val icon = file("E:\\Code\\java\\Abnormal-tools-release\\ICON.ico")
+        if (icon.exists()) command.addAll(listOf("--icon", icon.absolutePath))
 
         println("Running: ${command.joinToString(" ")}")
         val process = ProcessBuilder(command).inheritIO().start()

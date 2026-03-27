@@ -104,11 +104,15 @@ public class MainGUI extends JFrame{
         updateButton.addActionListener(e -> JOptionPane.showMessageDialog(
                 null,
                 """
-                    Abnormal-Tools v1.7.1
-
+                    Abnormal-Tools v1.8.0
+                    
+                    新增：
+                    1. 计算功能 -> 简单定积分：目前支持四种初等函数的定积分计算，用户可选择函数类型、输入参数、积分区间和精度，计算定积分结果。
+                    
                     修正：
-                    1. 修改了初始化逻辑，现在依赖被分解成多个包，仅在使用到依赖的功能第一次启动时下载对应依赖
-                    2. “概率计算”新增了对均匀分布模型和指数分布的支持
+                    1. 概率计算新增“正态分布”模型支持
+                    2. 将依赖下载目录改为“C:\\Users\\username\\Documents\\Abnormal_Dependencies”
+                    3. 现在应用使用安装包安装，将自带jre环境，无需手动配置环境了
                     """,
                 "更新日志",
                 JOptionPane.INFORMATION_MESSAGE
